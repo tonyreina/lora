@@ -16,3 +16,7 @@ python = ">=3.13.9,<3.14"
 transformers = ">=4.57.1,<5"
 peft = ">=0.18.0,<0.19"
 jupyter = ">=1.1.1,<2"
+gliner = "*"
+
+[pypi-dependencies]
+openmed = ">=0.3.0, <0.4"
