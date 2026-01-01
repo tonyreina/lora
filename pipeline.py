@@ -85,7 +85,7 @@ def run_training(cfg: DictConfig) -> str:
     return adapter_dir
 
 
-def run_inference(cfg: DictConfig) -> None:
+def run_interactive_inference(cfg: DictConfig) -> None:
     """Run interactive inference."""
     print("🤖 Starting inference pipeline...")
     

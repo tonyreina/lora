@@ -22,7 +22,7 @@ def load_inference_model(base_model: str, adapter_dir: str):
     inference_model = AutoModelForCausalLM.from_pretrained(
         base_model,
         device_map="auto",
-        torch_dtype=torch.float16,
+        dtype=torch.float16,
         low_cpu_mem_usage=True,
         offload_folder=offload_dir,
         max_memory={0: "6GiB", "cpu": "30GiB"},  # More conservative GPU memory usage
@@ -50,10 +50,10 @@ def load_inference_model(base_model: str, adapter_dir: str):
 def generate_response(model, tokenizer, messages: List[Dict[str, str]], 
                      tools: List[Dict[str, Any]], max_new_tokens: int = 300) -> str:
     """Generate response from model."""
-    # Format prompt
+    # Format prompt (disable tools for now due to schema compatibility)
     formatted_prompt = tokenizer.apply_chat_template(
         messages, 
-        tools=tools,
+        tools=None,  # Disable tools temporarily
         add_generation_prompt=True,
         tokenize=False
     )

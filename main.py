@@ -25,8 +25,8 @@ def main(cfg: DictConfig) -> None:
         run_training(cfg)
         
     elif cfg.mode == "inference":
-        from pipeline import run_inference
-        run_inference(cfg)
+        from pipeline import run_interactive_inference
+        run_interactive_inference(cfg)
         
     elif cfg.mode == "demo":
         from pipeline import run_demo
