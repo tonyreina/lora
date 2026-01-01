@@ -17,6 +17,10 @@ transformers = ">=4.57.1,<5"
 peft = ">=0.18.0,<0.19"
 jupyter = ">=1.1.1,<2"
 gliner = "*"
+accelerate = ">=1.12.0,<2"
+bitsandbytes = ">=0.49.0,<0.50"
+trl = ">=0.26.2,<0.27"
+evaluate = ">=0.4.6,<0.5"
 
 [pypi-dependencies]
 openmed = ">=0.3.0, <0.4"
