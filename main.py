@@ -14,7 +14,7 @@ def main(cfg: DictConfig) -> None:
     logger.info("🚀 Medical LLM Pipeline")
     logger.info(f"Mode: {cfg.mode}")
     logger.info("Configuration:")
-    logger.info(f"\n{OmegaConf.to_yaml(cfg, resolve=True)}")
+    logger.info(f"{OmegaConf.to_yaml(cfg, resolve=True)}")
     
     # Set global configuration
     os.environ["TOKENIZERS_PARALLELISM"] = "false"

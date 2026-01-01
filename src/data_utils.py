@@ -46,7 +46,7 @@ def load_medical_dataset(file_path: str, data_config, seed: int = 42) -> Dataset
     
     # Show example
     example = dataset["train"][0]
-    logger.info("\nExample from training set:")
+    logger.info("Example from training set:")
     preview_length = getattr(data_config.display, 'example_preview_length', 100)
     logger.info({k: (str(v)[:preview_length] + "...") if len(str(v)) > preview_length else v for k, v in example.items()})
     
@@ -163,7 +163,7 @@ def prepare_datasets(raw_dataset: DatasetDict, tokenizer, data_config):
     logger.info(f"Test examples      : {len(test_dataset)}")
     
     preview_tokens = getattr(data_config.display, 'token_preview_length', 160)
-    logger.info(f"\nFirst {preview_tokens} tokens of training example:")
+    logger.info(f"First {preview_tokens} tokens of training example:")
     logger.info(tokenizer.decode(train_dataset[0]["input_ids"][:preview_tokens]))
     
     return train_dataset, eval_dataset, test_dataset

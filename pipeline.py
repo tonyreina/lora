@@ -61,11 +61,11 @@ def run_training(cfg: DictConfig) -> str:
     # Train model
     if cfg.training.early_stopping.enabled:
         patience = cfg.training.early_stopping.get('patience', 3)
-        logger.info(f"\n🚀 Starting training with early stopping (patience={patience})...")
+        logger.info(f"🚀 Starting training with early stopping (patience={patience})...")
     else:
-        logger.info("\n🚀 Starting training (no early stopping)...")
+        logger.info("🚀 Starting training (no early stopping)...")
     trainer.train()
-    logger.info("\n\nFinished training.\n\n")
+    logger.info("Finished training.\n\n")
     
     # Save model
     logger.info("💾 Saving model...")
@@ -130,7 +130,7 @@ def run_interactive_inference(cfg: DictConfig) -> None:
             logger.error(f"❌ Error: {e}")
             continue
     
-    logger.info("\n👋 Thank you for using the Medical AI Assistant!")
+    logger.info("👋 Thank you for using the Medical AI Assistant!")
 
 
 def run_demo(cfg: DictConfig) -> None:
@@ -161,7 +161,7 @@ def run_demo(cfg: DictConfig) -> None:
         cfg.inference.generation
     )
     
-    logger.success("\n✅ Demo complete!")
+    logger.success("✅ Demo complete!")
 
 
 def run_full_pipeline(cfg: DictConfig) -> None:
@@ -169,14 +169,14 @@ def run_full_pipeline(cfg: DictConfig) -> None:
     logger.info("🚀 Starting complete Medical LLM Training and Inference Pipeline")
     
     # Step 1: Training
-    logger.info("\n📚 Step 1: Training the model...")
+    logger.info("📚 Step 1: Training the model...")
     adapter_dir = run_training(cfg)
     
     # Step 2: Demo inference
-    logger.info("\n🤖 Step 2: Running demo inference...")
+    logger.info("🤖 Step 2: Running demo inference...")
     run_demo(cfg)
     
-    logger.success("\n✅ Complete pipeline finished!")
+    logger.success("✅ Complete pipeline finished!")
     logger.info(f"Adapter saved to: {adapter_dir}")
-    logger.info("\nTo run interactive inference, use:")
+    logger.info("To run interactive inference, use:")
     logger.info("python main.py mode=inference")
