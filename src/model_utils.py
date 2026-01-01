@@ -103,17 +103,22 @@ def setup_lora_model(model, lora_config):
         >>> lora_model = setup_lora_model(base_model, cfg.lora)
         >>> # Outputs: trainable params: XXX || all params: YYY || trainable%: Z.ZZ%
     """
+    from omegaconf import OmegaConf
+    
     # Prepare model for k-bit training
     model = prepare_model_for_kbit_training(model)
     
     # Disable cache for gradient checkpointing compatibility
     model.config.use_cache = False
     
+    # Convert Hydra ListConfig to regular Python list for JSON serialization
+    target_modules = OmegaConf.to_object(lora_config.target_modules)
+    
     # LoRA configuration
     peft_config = LoraConfig(
         r=lora_config.r,
         lora_alpha=lora_config.alpha,
-        target_modules=lora_config.target_modules,
+        target_modules=target_modules,
         lora_dropout=lora_config.dropout,
         bias="none",
         task_type="CAUSAL_LM",

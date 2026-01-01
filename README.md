@@ -1,8 +1,13 @@
 # Medical LLM Pipeline with Hydra Configuration
 
-This project uses [Hydra](https://hydra.cc/) for configuration management.
+This project uses [Hydra](https://hydra.cc/) for configuration management
+and [Pixi](https://pixi.sh) for Python virtual environment management.
 
 ## Quick Start
+
+1. Clone this Git repository.
+2. Change to the repository directory.
+2. Follow the instructions to download and install [Pixi](https://pixi.sh).
 
 The main entry point is `main.py` which uses Hydra configuration:
 
