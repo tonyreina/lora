@@ -4,6 +4,11 @@ data:
   test_split: 0.1
   validation_split: 0.1
   
+  # Display settings for examples
+  display:
+    example_preview_length: 120  # Characters to show in example preview
+    token_preview_length: 160    # Tokens to show from training example
+  
   # Data preprocessing
   preprocessing:
     max_length: ${model.max_length}

@@ -3,6 +3,7 @@
 
 import os
 import hydra
+from loguru import logger
 from omegaconf import DictConfig, OmegaConf
 
 
@@ -10,12 +11,10 @@ from omegaconf import DictConfig, OmegaConf
 def main(cfg: DictConfig) -> None:
     """Main entry point for the medical LLM pipeline."""
     
-    print("🚀 Medical LLM Pipeline")
-    print("=" * 60)
-    print(f"Mode: {cfg.mode}")
-    print("Configuration:")
-    print(OmegaConf.to_yaml(cfg, resolve=True))
-    print("=" * 60)
+    logger.info("🚀 Medical LLM Pipeline")
+    logger.info(f"Mode: {cfg.mode}")
+    logger.info("Configuration:")
+    logger.info(f"\n{OmegaConf.to_yaml(cfg, resolve=True)}")
     
     # Set global configuration
     os.environ["TOKENIZERS_PARALLELISM"] = "false"

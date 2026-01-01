@@ -2,25 +2,54 @@
 
 import os
 import torch
+from loguru import logger
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from peft import PeftModel
 from typing import List, Dict, Any
 
 
-def load_inference_model(base_model: str, adapter_dir: str):
-    """Load model and tokenizer for inference."""
+def load_inference_model(base_model: str, adapter_dir: str, inference_config):
+    """Load base model with LoRA adapter for inference.
+    
+    Loads a base language model and applies a LoRA adapter for inference,
+    with memory-efficient settings including device mapping and offloading.
+    Sets up tokenizer with proper padding token configuration.
+    
+    Args:
+        base_model (str): Path or HuggingFace model ID for the base model.
+        adapter_dir (str): Path to directory containing the LoRA adapter files.
+        inference_config: Configuration object containing inference parameters.
+        
+    Returns:
+        tuple: A tuple containing:
+            - inference_model: PEFT model with LoRA adapter loaded and set to eval mode
+            - inference_tokenizer: Configured tokenizer with proper pad token
+            
+    Note:
+        - Creates offload directory for model offloading (from config)
+        - Uses memory allocation settings from config
+        - Automatically handles pad token setup and vocabulary resizing if needed
+        
+    Example:
+        >>> model, tokenizer = load_inference_model(
+        ...     "microsoft/phi-3.5-mini", "./checkpoints/lora_adapter", cfg.inference
+        ... )
+    """
     # Create offload directory for proper model dispatching
-    offload_dir = "./offload_tmp"
+    offload_dir = inference_config.memory.offload_dir
     os.makedirs(offload_dir, exist_ok=True)
     
-    # Load base model with more conservative memory settings
+    # Get dtype from config
+    dtype = getattr(torch, inference_config.memory.dtype)
+    
+    # Load base model with memory settings from config
     inference_model = AutoModelForCausalLM.from_pretrained(
         base_model,
         device_map="auto",
-        dtype=torch.float16,
-        low_cpu_mem_usage=True,
+        dtype=dtype,
+        low_cpu_mem_usage=inference_config.memory.low_cpu_mem_usage,
         offload_folder=offload_dir,
-        max_memory={0: "6GiB", "cpu": "30GiB"},  # More conservative GPU memory usage
+        max_memory={0: inference_config.memory.max_memory.gpu, "cpu": inference_config.memory.max_memory.cpu},
     )
     
     # Load adapter with offload directory
@@ -43,8 +72,35 @@ def load_inference_model(base_model: str, adapter_dir: str):
 
 
 def generate_response(model, tokenizer, messages: List[Dict[str, str]], 
-                     max_new_tokens: int = 300) -> str:
-    """Generate response from model."""
+                     generation_config) -> str:
+    """Generate text response from model using conversational messages.
+    
+    Takes a list of conversational messages, applies chat template formatting,
+    and generates a response using the model with configured sampling parameters.
+    
+    Args:
+        model: The loaded language model (typically PEFT model with adapter).
+        tokenizer: HuggingFace tokenizer with chat template support.
+        messages (List[Dict[str, str]]): List of message dicts with 'role' and 'content' keys.
+            Typically includes system, user, and optionally assistant messages.
+        generation_config: Configuration object containing generation parameters.
+        
+    Returns:
+        str: Complete generated text including the original prompt and new response.
+        
+    Note:
+        - Uses generation parameters from config (temperature, top_p, max_new_tokens, etc.)
+        - Applies chat template with generation prompt
+        - Handles device placement automatically
+        - Includes progress indication during generation
+        
+    Example:
+        >>> messages = [
+        ...     {"role": "system", "content": "You are a helpful assistant."},
+        ...     {"role": "user", "content": "What is machine learning?"}
+        ... ]
+        >>> response = generate_response(model, tokenizer, messages, cfg.inference.generation)
+    """
     # Format prompt
     formatted_prompt = tokenizer.apply_chat_template(
         messages, 
@@ -63,13 +119,14 @@ def generate_response(model, tokenizer, messages: List[Dict[str, str]],
     attention_mask = inputs.attention_mask.to(model.device)
     
     # Generate response
-    print("🤖 Generating response...\n")
+    logger.info("🤖 Generating response...\n")
     gen = model.generate(
         inputs_tensor,
         attention_mask=attention_mask,
-        max_new_tokens=max_new_tokens,
-        do_sample=True,
-        temperature=0.3,
+        max_new_tokens=generation_config.max_new_tokens,
+        do_sample=generation_config.do_sample,
+        temperature=generation_config.temperature,
+        top_p=getattr(generation_config, 'top_p', 0.9),
         pad_token_id=tokenizer.pad_token_id,
     )
     
@@ -79,7 +136,29 @@ def generate_response(model, tokenizer, messages: List[Dict[str, str]],
 
 
 def extract_assistant_response(response: str) -> str:
-    """Extract just the assistant's response from full generation."""
+    """Extract assistant's response from full model generation.
+    
+    Parses the complete model output to isolate only the assistant's response
+    by looking for specific chat template markers and removing system/user content.
+    
+    Args:
+        response (str): Complete generated text from the model including all conversation parts.
+        
+    Returns:
+        str: Cleaned assistant response with template markers and extra content removed.
+        
+    Note:
+        - Looks for '<|assistant|>' marker to identify response start
+        - Removes '<|end|>' marker if present to clean response end
+        - Returns original response if no markers found
+        - Strips whitespace from extracted response
+        
+    Example:
+        >>> full_response = "<|system|>Help user<|user|>Hello<|assistant|>Hi there!<|end|>"
+        >>> clean_response = extract_assistant_response(full_response)
+        >>> print(clean_response)
+        "Hi there!"
+    """
     if "<|assistant|>" in response:
         assistant_response = response.split("<|assistant|>")[-1]
         if "<|end|>" in assistant_response:
@@ -88,8 +167,37 @@ def extract_assistant_response(response: str) -> str:
     return response
 
 
-def run_inference(model, tokenizer, user_query: str, system_prompt: str):
-    """Run complete inference pipeline."""
+def run_inference(model, tokenizer, user_query: str, system_prompt: str, generation_config):
+    """Execute complete inference pipeline with formatted output.
+    
+    Orchestrates the full inference process from user query to formatted response,
+    including message preparation, generation, response extraction, and display.
+    Provides detailed output formatting for both raw and cleaned responses.
+    
+    Args:
+        model: The loaded language model ready for inference.
+        tokenizer: HuggingFace tokenizer compatible with the model.
+        user_query (str): User's input question or prompt.
+        system_prompt (str): System message defining model behavior and context.
+        generation_config: Configuration object containing generation parameters.
+        
+    Returns:
+        None: This function handles output display but doesn't return values.
+        
+    Side Effects:
+        - Prints full raw response with decorative borders
+        - Prints extracted assistant response with formatted headers
+        - Includes progress indicators during generation
+        
+    Example:
+        >>> run_inference(
+        ...     model, tokenizer, 
+        ...     "What is diabetes?",
+        ...     "You are a medical AI assistant.",
+        ...     cfg.inference.generation
+        ... )
+        # Outputs formatted response to console
+    """
     # Prepare messages
     messages = [
         {"role": "system", "content": system_prompt},
@@ -97,17 +205,13 @@ def run_inference(model, tokenizer, user_query: str, system_prompt: str):
     ]
     
     # Generate initial response
-    response = generate_response(model, tokenizer, messages)
+    response = generate_response(model, tokenizer, messages, generation_config)
     
-    print("Full Response:")
-    print("-" * 60)
-    print(response)
-    print("-" * 60)
+    logger.info("Full Response:")
+    logger.info(response)
     
     # Extract assistant response
     assistant_response = extract_assistant_response(response)
     
-    print("\n🎯 Model's Response to User:")
-    print("=" * 60)
-    print(assistant_response)
-    print("=" * 60)
+    logger.info("🎯 Model's Response to User:")
+    logger.info(assistant_response)
