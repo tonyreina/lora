@@ -6,11 +6,6 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 from peft import PeftModel
 from typing import List, Dict, Any
 
-from .function_utils import (
-    has_function_calls, extract_function_calls, 
-    request_permission, execute_function_call
-)
-
 
 def load_inference_model(base_model: str, adapter_dir: str):
     """Load model and tokenizer for inference."""
@@ -48,12 +43,11 @@ def load_inference_model(base_model: str, adapter_dir: str):
 
 
 def generate_response(model, tokenizer, messages: List[Dict[str, str]], 
-                     tools: List[Dict[str, Any]], max_new_tokens: int = 300) -> str:
+                     max_new_tokens: int = 300) -> str:
     """Generate response from model."""
-    # Format prompt (disable tools for now due to schema compatibility)
+    # Format prompt
     formatted_prompt = tokenizer.apply_chat_template(
         messages, 
-        tools=None,  # Disable tools temporarily
         add_generation_prompt=True,
         tokenize=False
     )
@@ -69,7 +63,7 @@ def generate_response(model, tokenizer, messages: List[Dict[str, str]],
     attention_mask = inputs.attention_mask.to(model.device)
     
     # Generate response
-    print("🤖 Generating response with function calling enabled...\n")
+    print("🤖 Generating response...\n")
     gen = model.generate(
         inputs_tensor,
         attention_mask=attention_mask,
@@ -94,54 +88,8 @@ def extract_assistant_response(response: str) -> str:
     return response
 
 
-def process_function_calls(assistant_response: str, messages: List[Dict[str, str]], 
-                          tools: List[Dict[str, Any]], model, tokenizer) -> str:
-    """Process function calls and generate final response."""
-    function_calls = extract_function_calls(assistant_response)
-    function_results = []
-    all_source_urls = []
-    
-    for call in function_calls:
-        function_name = call.get("name")
-        arguments = call.get("arguments", {})
-        
-        # Request permission and get URLs
-        source_urls = request_permission(function_name, arguments)
-        all_source_urls.extend(source_urls)
-        
-        # Execute function call
-        print(f"🔧 Executing: {function_name}({arguments})")
-        result, additional_urls = execute_function_call(function_name, arguments)
-        all_source_urls.extend(additional_urls)
-        
-        function_results.append(result)
-        print(f"📋 Result: {result[:100]}...")
-    
-    if function_results:
-        print("\n🤖 Generating final response with search results...\n")
-        
-        # Create follow-up prompt with function results
-        results_text = "\n\n".join([f"Search Result {i+1}:\n{result}" 
-                                   for i, result in enumerate(function_results)])
-        
-        follow_up_messages = messages + [
-            {"role": "assistant", "content": assistant_response},
-            {"role": "system", "content": f"Here are the results from your function calls:\n\n{results_text}\n\nNow provide a comprehensive answer to the user's question based on these results. Include the medical disclaimer at the end."},
-            {"role": "user", "content": "Please provide your final answer based on the search results."}
-        ]
-        
-        # Generate final response
-        final_response = generate_response(model, tokenizer, follow_up_messages, tools, 400)
-        final_assistant_response = extract_assistant_response(final_response)
-        
-        return final_assistant_response, all_source_urls
-    
-    return assistant_response, all_source_urls
-
-
-def run_inference(model, tokenizer, tools: List[Dict[str, Any]], 
-                  user_query: str, system_prompt: str):
-    """Run complete inference pipeline with function calling."""
+def run_inference(model, tokenizer, user_query: str, system_prompt: str):
+    """Run complete inference pipeline."""
     # Prepare messages
     messages = [
         {"role": "system", "content": system_prompt},
@@ -149,7 +97,7 @@ def run_inference(model, tokenizer, tools: List[Dict[str, Any]],
     ]
     
     # Generate initial response
-    response = generate_response(model, tokenizer, messages, tools)
+    response = generate_response(model, tokenizer, messages)
     
     print("Full Response:")
     print("-" * 60)
@@ -163,26 +111,3 @@ def run_inference(model, tokenizer, tools: List[Dict[str, Any]],
     print("=" * 60)
     print(assistant_response)
     print("=" * 60)
-    
-    # Check for and process function calls
-    if has_function_calls(assistant_response):
-        print("\n✅ Model generated function call(s)!")
-        
-        final_response, source_urls = process_function_calls(
-            assistant_response, messages, tools, model, tokenizer
-        )
-        
-        print("🎯 Final Response with Search Results:")
-        print("=" * 60)
-        print(final_response)
-        
-        # Add source URLs if any were used
-        if source_urls:
-            print("\n📚 Sources:")
-            for i, url in enumerate(set(source_urls), 1):
-                print(f"{i}. {url}")
-        
-        print("=" * 60)
-        
-    else:
-        print("\n📝 Model provided direct answer without tool usage")

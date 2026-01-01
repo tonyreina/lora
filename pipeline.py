@@ -125,7 +125,6 @@ def run_interactive_inference(cfg: DictConfig) -> None:
             run_inference(
                 model, 
                 tokenizer, 
-                cfg.inference.tools, 
                 user_query, 
                 cfg.data.preprocessing.system_prompt
             )
@@ -163,7 +162,6 @@ def run_demo(cfg: DictConfig) -> None:
     run_inference(
         model, 
         tokenizer, 
-        cfg.inference.tools, 
         demo_question, 
         cfg.data.preprocessing.system_prompt
     )
