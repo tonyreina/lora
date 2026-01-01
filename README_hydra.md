@@ -10,17 +10,20 @@ The main entry point is `main.py` which uses Hydra configuration:
 # Training only
 pixi run python main.py mode=train
 
-# Inference only  
+# Inference only (requires trained model)
 pixi run python main.py mode=inference
 
-# Demo inference
+# Demo inference (requires trained model)
 pixi run python main.py mode=demo
 
-# Full pipeline (train then demo)
+# Full pipeline (train then demo) - requires sufficient GPU memory
 pixi run python main.py mode=pipeline
 
-# Quick demo (super fast training + demo)
+# Quick demo (super fast training only)
 pixi run python main.py --config-name=quick_demo
+
+# Memory-optimized training for limited GPU systems
+pixi run python main.py --config-name=memory_optimized
 
 # Production training
 pixi run python main.py --config-name=production
