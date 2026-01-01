@@ -1,0 +1,27 @@
+# @package _global_
+training:
+  batch_size: 2
+  learning_rate: 1e-4
+  max_steps: 100
+  validate_steps: 10
+  gradient_accumulation_steps: 4
+  warmup_steps: 10
+  logging_steps: 5
+  save_steps: 20
+  eval_steps: 10
+  
+  # Early stopping
+  early_stopping:
+    enabled: true
+    patience: 5
+    metric: eval_loss
+    
+  # Optimizer settings
+  optimizer:
+    type: adamw
+    weight_decay: 0.01
+    
+  # Scheduler settings
+  scheduler:
+    type: cosine
+    warmup_ratio: 0.05

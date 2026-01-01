@@ -1,5 +1,6 @@
 checkpoints/
 offload_tmp/
+outputs/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

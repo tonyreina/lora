@@ -1,0 +1,36 @@
+# @package _global_
+inference:
+  adapter_path: ${output_dir}/lora_adapter
+  interactive: true
+  demo_question: "What are the latest treatment guidelines for hypertension?"
+  
+  # Generation parameters
+  generation:
+    max_new_tokens: 512
+    temperature: 0.7
+    top_p: 0.9
+    do_sample: true
+    
+  # Tools configuration
+  tools:
+    - name: search_internet
+      description: Search the internet for current medical information, research, and clinical guidelines
+      parameters:
+        query:
+          description: The medical search query
+          type: str
+        num_results:
+          description: Number of search results to return
+          type: int
+          default: 5
+    
+    - name: retrieve_clinical_guidelines
+      description: Retrieve clinical guidelines and best practices for specific conditions
+      parameters:
+        condition:
+          description: The medical condition to retrieve guidelines for
+          type: str
+        guideline_source:
+          description: Source of guidelines (e.g. NICE, AHA, CDC, WHO, JAMA, NEJM, American Cancer Society)
+          type: str
+          default: general

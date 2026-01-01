@@ -1,0 +1,20 @@
+# Memory-optimized configuration for limited GPU systems
+defaults:
+  - model: phi4_mini
+  - training: debug
+  - data: medical
+  - inference: default
+  - _self_
+
+mode: train  # Training only to avoid memory issues
+seed: 816
+output_dir: ./checkpoints/memory-opt-model
+
+training:
+  max_steps: 1  # Minimal training
+  batch_size: 1
+  gradient_accumulation_steps: 1
+
+# Memory optimization settings
+model:
+  max_length: 256  # Shorter sequences to save memory

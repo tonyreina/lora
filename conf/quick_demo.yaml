@@ -1,0 +1,14 @@
+# Quick demo configuration - train quickly and run demo
+defaults:
+  - model: phi4_mini
+  - training: debug
+  - data: medical
+  - inference: default
+  - _self_
+
+mode: train  # Just train for now, skip demo due to memory constraints
+seed: 816
+output_dir: ./checkpoints/quick-demo-model
+
+training:
+  max_steps: 3  # Super quick for demo
