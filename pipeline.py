@@ -179,4 +179,4 @@ def run_full_pipeline(cfg: DictConfig) -> None:
     logger.success("✅ Complete pipeline finished!")
     logger.info(f"Adapter saved to: {adapter_dir}")
     logger.info("To run interactive inference, use:")
-    logger.info("python main.py mode=inference")
+    logger.info("pixi run python main.py mode=inference")
