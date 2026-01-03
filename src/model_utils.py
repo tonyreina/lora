@@ -11,6 +11,7 @@ from transformers import (
     Trainer,
     TrainingArguments,
     EarlyStoppingCallback,
+    TrainerCallback,
     set_seed,
 )
 from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
@@ -131,6 +132,18 @@ def setup_lora_model(model, lora_config):
     return model
 
 
+class PerplexityCallback(TrainerCallback):
+    """Callback to log perplexity during training."""
+    
+    def on_evaluate(self, args, state, control, logs=None, **kwargs):
+        """Calculate and log perplexity after evaluation."""
+        if logs is not None and 'eval_loss' in logs:
+            import math
+            perplexity = math.exp(logs['eval_loss'])
+            logs['eval_perplexity'] = perplexity
+            logger.info(f"📊 Evaluation - Loss: {logs['eval_loss']:.4f}, Perplexity: {perplexity:.4f}")
+
+
 def create_trainer(model, tokenizer, train_dataset, eval_dataset, output_dir: str, 
                    training_config):
     """Create and configure HuggingFace Trainer for LoRA fine-tuning.
@@ -174,35 +187,30 @@ def create_trainer(model, tokenizer, train_dataset, eval_dataset, output_dir: st
     # Data collator
     data_collator = DataCollatorForLanguageModeling(tokenizer=tokenizer, mlm=False)
     
-    # Determine training mode (steps vs epochs)
-    use_steps = training_config.max_steps is not None and training_config.max_steps > 0
-    use_epochs = hasattr(training_config, 'num_epochs') and training_config.num_epochs is not None and training_config.num_epochs > 0
+    # Use epoch-based training (much simpler!)
+    logger.info(f"📅 Training mode: Epochs-based ({training_config.get('num_epochs', 3)} epochs)")
+    eval_strategy = "epoch"  # Evaluate at end of each epoch
+    save_strategy = "epoch"  # Save at end of each epoch
     
-    if use_steps:
-        logger.info(f"🔢 Training mode: Steps-based ({training_config.max_steps} steps)")
-        eval_strategy = "steps"
-        save_strategy = "steps"
-    elif use_epochs:
-        logger.info(f"📅 Training mode: Epochs-based ({training_config.num_epochs} epochs)")
-        eval_strategy = "epoch"
-        save_strategy = "epoch"
-    else:
-        logger.warning("⚠️  No training duration specified, defaulting to 3 epochs")
-        use_epochs = True
-        eval_strategy = "epoch"
-        save_strategy = "epoch"
-    
-    # Build base training arguments
+    # Build training arguments - let Trainer handle the complexity!
     training_args_dict = {
         "output_dir": output_dir,
+        "num_train_epochs": training_config.get('num_epochs', 3),
         "per_device_train_batch_size": training_config.batch_size,
         "gradient_accumulation_steps": training_config.gradient_accumulation_steps,
         "optim": "adamw_torch",
         "learning_rate": training_config.learning_rate,
-        "warmup_ratio": training_config.scheduler.warmup_ratio,
-        "eval_strategy": eval_strategy,
-        "save_strategy": save_strategy,
-        "logging_steps": training_config.logging_steps,
+        "warmup_ratio": getattr(training_config.scheduler, 'warmup_ratio', 0.03),
+        
+        # Epoch-based evaluation and saving (automatic!)
+        "eval_strategy": "epoch",
+        "save_strategy": "epoch",
+        "logging_steps": getattr(training_config, 'logging_steps', 10),
+        
+        # Ensure progress bar shows training loss
+        "disable_tqdm": False,
+        "logging_first_step": True,
+        
         "logging_dir": f"{output_dir}/logs",
         "dataloader_pin_memory": False,
         "seed": 42,
@@ -216,16 +224,7 @@ def create_trainer(model, tokenizer, train_dataset, eval_dataset, output_dir: st
         "gradient_checkpointing_kwargs": {"use_reentrant": False},
     }
     
-    # Add training duration and evaluation settings
-    if use_steps:
-        training_args_dict["max_steps"] = training_config.max_steps
-        training_args_dict["eval_steps"] = training_config.eval_steps
-        training_args_dict["save_steps"] = training_config.save_steps
-    else:
-        training_args_dict["num_train_epochs"] = training_config.get('num_epochs', 3)
-        # For epoch-based training, save and eval at each epoch
-        training_args_dict["save_steps"] = 1  # This becomes save_epochs when strategy is epoch
-        training_args_dict["eval_steps"] = 1  # This becomes eval_epochs when strategy is epoch
+    # That's it! Trainer handles the rest automatically with epoch-based strategies
     
     # Training arguments
     training_args = TrainingArguments(**training_args_dict)
@@ -237,13 +236,15 @@ def create_trainer(model, tokenizer, train_dataset, eval_dataset, output_dir: st
     
     # Create trainer
     callbacks = [early_stopping] if early_stopping else []
+    callbacks.append(PerplexityCallback())  # Add perplexity logging
+    
     trainer = Trainer(
         model=model,
         args=training_args,
         train_dataset=train_dataset,
         eval_dataset=eval_dataset,
         data_collator=data_collator,
-        callbacks=callbacks, 
+        callbacks=callbacks,
     )
     
     return trainer
@@ -319,11 +320,18 @@ def evaluate_model(trainer, test_dataset):
         ==================================================
         Test Loss: 0.1234
     """
+    import math
+    
     logger.info(f"Test dataset size: {len(test_dataset)}")
     test_results = trainer.evaluate(eval_dataset=test_dataset)
     
+    # Calculate perplexity from loss
+    perplexity = math.exp(test_results['eval_loss'])
+    test_results['eval_perplexity'] = perplexity
+    
     logger.info("📊 FINAL TEST METRICS")
     logger.info(f"Test Loss: {test_results['eval_loss']:.4f}")
+    logger.info(f"Test Perplexity: {perplexity:.4f}")
     logger.info(f"All metrics:")
     logger.info(test_results)
     

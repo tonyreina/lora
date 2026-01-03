@@ -1,19 +1,13 @@
 # @package _global_
 training:
-  batch_size: 1
+  # Core training parameters
+  batch_size: 4
   learning_rate: 2e-4
-  
-  # Training duration - use either max_steps OR num_epochs
-  # When both are specified, max_steps takes precedence
-  max_steps: null  # null means use epochs instead
   num_epochs: 3    # Number of epochs to train
+  gradient_accumulation_steps: 8
   
-  validate_steps: 5
-  gradient_accumulation_steps: 1
-  warmup_steps: 2
-  logging_steps: 1
-  save_steps: 5
-  eval_steps: 5
+  # Simple logging frequency (steps)
+  logging_steps: 10  # Log every 10 steps - reasonable for any dataset size
   
   # Early stopping
   early_stopping:
