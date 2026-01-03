@@ -152,7 +152,8 @@ def create_trainer(model, tokenizer, train_dataset, eval_dataset, output_dir: st
     Training Configuration (from config):
         - batch_size: Per-device training batch size
         - learning_rate: Learning rate for optimizer
-        - max_steps: Maximum number of training steps
+        - max_steps: Maximum number of training steps (use null for epoch-based training)
+        - num_epochs: Number of training epochs (ignored if max_steps is specified)
         - validate_steps: Steps between evaluations and checkpoints
         - gradient_accumulation_steps: Effective batch size multiplier
         - warmup_ratio: Learning rate warmup fraction
@@ -173,32 +174,61 @@ def create_trainer(model, tokenizer, train_dataset, eval_dataset, output_dir: st
     # Data collator
     data_collator = DataCollatorForLanguageModeling(tokenizer=tokenizer, mlm=False)
     
+    # Determine training mode (steps vs epochs)
+    use_steps = training_config.max_steps is not None and training_config.max_steps > 0
+    use_epochs = hasattr(training_config, 'num_epochs') and training_config.num_epochs is not None and training_config.num_epochs > 0
+    
+    if use_steps:
+        logger.info(f"🔢 Training mode: Steps-based ({training_config.max_steps} steps)")
+        eval_strategy = "steps"
+        save_strategy = "steps"
+    elif use_epochs:
+        logger.info(f"📅 Training mode: Epochs-based ({training_config.num_epochs} epochs)")
+        eval_strategy = "epoch"
+        save_strategy = "epoch"
+    else:
+        logger.warning("⚠️  No training duration specified, defaulting to 3 epochs")
+        use_epochs = True
+        eval_strategy = "epoch"
+        save_strategy = "epoch"
+    
+    # Build base training arguments
+    training_args_dict = {
+        "output_dir": output_dir,
+        "per_device_train_batch_size": training_config.batch_size,
+        "gradient_accumulation_steps": training_config.gradient_accumulation_steps,
+        "optim": "adamw_torch",
+        "learning_rate": training_config.learning_rate,
+        "warmup_ratio": training_config.scheduler.warmup_ratio,
+        "eval_strategy": eval_strategy,
+        "save_strategy": save_strategy,
+        "logging_steps": training_config.logging_steps,
+        "logging_dir": f"{output_dir}/logs",
+        "dataloader_pin_memory": False,
+        "seed": 42,
+        "fp16": True,
+        "load_best_model_at_end": True,
+        "metric_for_best_model": "eval_loss",
+        "greater_is_better": False,
+        "remove_unused_columns": False,
+        "report_to": None,
+        "gradient_checkpointing": True,
+        "gradient_checkpointing_kwargs": {"use_reentrant": False},
+    }
+    
+    # Add training duration and evaluation settings
+    if use_steps:
+        training_args_dict["max_steps"] = training_config.max_steps
+        training_args_dict["eval_steps"] = training_config.eval_steps
+        training_args_dict["save_steps"] = training_config.save_steps
+    else:
+        training_args_dict["num_train_epochs"] = training_config.get('num_epochs', 3)
+        # For epoch-based training, save and eval at each epoch
+        training_args_dict["save_steps"] = 1  # This becomes save_epochs when strategy is epoch
+        training_args_dict["eval_steps"] = 1  # This becomes eval_epochs when strategy is epoch
+    
     # Training arguments
-    training_args = TrainingArguments(
-        output_dir=output_dir,
-        per_device_train_batch_size=training_config.batch_size,
-        gradient_accumulation_steps=training_config.gradient_accumulation_steps,
-        optim="adamw_torch",
-        learning_rate=training_config.learning_rate,
-        warmup_ratio=training_config.scheduler.warmup_ratio,
-        max_steps=training_config.max_steps,
-        eval_strategy="steps",
-        eval_steps=training_config.eval_steps,
-        save_strategy="steps",
-        save_steps=training_config.save_steps,
-        logging_steps=training_config.logging_steps,
-        logging_dir=f"{output_dir}/logs",
-        dataloader_pin_memory=False,
-        seed=42,
-        fp16=True,
-        load_best_model_at_end=True,
-        metric_for_best_model="eval_loss",
-        greater_is_better=False,
-        remove_unused_columns=False,
-        report_to=None,
-        gradient_checkpointing=True,
-        gradient_checkpointing_kwargs={"use_reentrant": False},
-    )
+    training_args = TrainingArguments(**training_args_dict)
     
     # Early stopping callback
     early_stopping = EarlyStoppingCallback(

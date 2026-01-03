@@ -3,22 +3,23 @@ training:
   batch_size: 2
   learning_rate: 1e-4
   
-  # Training duration - use either max_steps OR num_epochs
-  # When both are specified, max_steps takes precedence
-  max_steps: null  # null means use epochs instead
-  num_epochs: 10   # Number of epochs to train
+  # Training duration - epoch-based configuration
+  max_steps: null      # null means use epochs instead
+  num_epochs: 5        # Number of epochs to train
   
-  validate_steps: 10
+  # For epoch-based training, these are ignored (evaluation/saving happens per epoch)
+  validate_steps: null
+  eval_steps: null
+  save_steps: null
+  
   gradient_accumulation_steps: 4
   warmup_steps: 10
   logging_steps: 5
-  save_steps: 20
-  eval_steps: 10
   
   # Early stopping
   early_stopping:
     enabled: true
-    patience: 5
+    patience: 2  # Number of epochs to wait for improvement
     metric: eval_loss
     
   # Optimizer settings

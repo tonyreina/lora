@@ -59,7 +59,7 @@ You can override any configuration parameter from the command line:
 
 ```bash
 # Change training parameters
-pixi run python main.py mode=train training.max_steps=100 training.batch_size=2
+pixi run python main.py mode=train training.num_epochs=5 training.batch_size=2
 
 # Use different training config
 pixi run python main.py mode=train training=production
@@ -87,9 +87,10 @@ pixi run python main.py mode=train training=debug model.max_length=1024 training
 - `phi4_mini`: Microsoft Phi-4-mini-instruct (default)
 
 ### Training Configurations (`training=`)
-- `default`: Quick training with 10 steps (default)
-- `production`: Full training with 100 steps
-- `debug`: Ultra-fast training with 5 steps
+- `default`: Quick training with 3 epochs (default)
+- `production`: Full training with 10 epochs
+- `debug`: Ultra-fast training with 1 epoch
+- `epochs`: Epoch-based training with 5 epochs (dedicated epoch mode)
 
 ### Data Configurations (`data=`)
 - `medical`: Medical dataset configuration (default)
@@ -121,9 +122,30 @@ pixi run python main.py mode=inference
 
 ### Custom Configuration
 ```bash
+# Epoch-based training
+pixi run python main.py mode=train \
+  training=epochs \
+  training.num_epochs=8 \
+  training.learning_rate=3e-4 \
+  model.max_length=1024 \
+  output_dir=./checkpoints/epoch-experiment
+
+# Step-based training (legacy)
 pixi run python main.py mode=train \
   training.max_steps=50 \
   training.learning_rate=3e-4 \
   model.max_length=1024 \
-  output_dir=./checkpoints/custom-experiment
+  output_dir=./checkpoints/step-experiment
+```
+
+### Epoch-Based Training
+```bash
+# Use dedicated epoch configuration
+pixi run python main.py mode=train training=epochs
+
+# Quick epoch-based training
+pixi run python main.py mode=train training.num_epochs=2
+
+# Custom epochs with overrides
+pixi run python main.py mode=train training=epochs training.num_epochs=7
 ```
