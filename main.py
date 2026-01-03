@@ -40,7 +40,7 @@ def run_training(cfg: SimpleConfig):
     os.environ["TOKENIZERS_PARALLELISM"] = "false"
     
     # Import utilities
-    from src.utils import (
+    from utils import (
         load_and_prepare_data, setup_model, setup_lora, 
         prepare_datasets, create_trainer, save_model, cleanup_memory
     )
@@ -71,7 +71,7 @@ def run_inference(cfg: SimpleConfig):
     """Simplified inference pipeline."""
     logger.info("🤖 Starting inference...")
     
-    from src.utils import load_inference_model, run_inference
+    from utils import load_inference_model, run_inference
     
     adapter_dir = cfg.inference.adapter_path.replace("${output_dir}", cfg.output_dir)
     

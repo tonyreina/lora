@@ -121,9 +121,9 @@ training:
 
 ```
 medical-llm-pipeline/
-├── main.py                    # Main training and inference script
-├── config.yaml                # Configuration settings
-├── src/utils.py              # Core training and inference utilities
+├── main.py                   # Main training and inference script
+├── config.yaml               # Configuration settings
+├── utils.py                  # Core training and inference utilities
 ├── data/my_custom_data.jsonl # Your medical training data
 └── checkpoints/              # Saved model adapters
     └── model/lora_adapter/   # LoRA weights after training
