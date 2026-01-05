@@ -1,6 +1,9 @@
 checkpoints/
 offload_tmp/
-outputs/
+output/
+trainer_output/
+results/
+my_great_llm_model/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
