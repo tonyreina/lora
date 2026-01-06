@@ -60,7 +60,7 @@ def run_training(cfg: SimpleConfig):
     trainer.train()
     
     # Save and cleanup
-    adapter_dir = save_model(model, tokenizer, cfg.output_dir)
+    adapter_dir = save_model(model, tokenizer, cfg.output_dir, cfg.model.name)
     cleanup_memory()
     
     logger.success(f"✅ Training complete! Saved to: {adapter_dir}")
@@ -74,6 +74,9 @@ def run_inference(cfg: SimpleConfig):
     from utils import load_inference_model, run_inference
     
     adapter_dir = cfg.inference.adapter_path.replace("${output_dir}", cfg.output_dir)
+    # Extract model name from full model path (e.g., "microsoft/Phi-4-mini-instruct" -> "Phi-4-mini-instruct")
+    model_name = cfg.model.name.split('/')[-1] if '/' in cfg.model.name else cfg.model.name
+    adapter_dir = adapter_dir.replace("${model_name}", model_name)
     
     if not os.path.exists(adapter_dir):
         logger.error(f"❌ Model not found: {adapter_dir}")
@@ -87,7 +90,7 @@ def run_inference(cfg: SimpleConfig):
         logger.info("Medical AI Assistant - Type 'quit' to exit")
         while True:
             try:
-                query = input("👨‍⚕️ Ask: ").strip()
+                query = input("Ask me a question: ").strip()
                 if query.lower() in ['quit', 'exit', 'q']:
                     break
                 if query:

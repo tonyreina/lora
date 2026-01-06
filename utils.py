@@ -15,6 +15,41 @@ from transformers import (
 from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training, PeftModel
 
 
+def setup_hf_cache():
+    """Setup HuggingFace cache settings for better performance."""
+    # Set cache directory (optional, HF uses default if not set)
+    cache_dir = os.path.expanduser("~/.cache/huggingface")
+    os.makedirs(cache_dir, exist_ok=True)
+    
+    # Set environment variables for better caching
+    os.environ["HF_HOME"] = cache_dir
+    os.environ["TRANSFORMERS_CACHE"] = os.path.join(cache_dir, "transformers")
+    
+    logger.info(f"📁 HuggingFace cache directory: {cache_dir}")
+    return cache_dir
+
+
+def check_model_cache(model_name: str):
+    """Check if model is already cached."""
+    from transformers.utils import TRANSFORMERS_CACHE
+    import os
+    
+    # Try to find model in cache
+    cache_dir = TRANSFORMERS_CACHE or os.path.expanduser("~/.cache/huggingface/transformers")
+    
+    # Look for model files in cache
+    model_cache_exists = False
+    if os.path.exists(cache_dir):
+        for item in os.listdir(cache_dir):
+            if model_name.replace("/", "--") in item:
+                model_cache_exists = True
+                break
+    
+    status = "✅ cached" if model_cache_exists else "⬇️  will download"
+    logger.info(f"🔍 Model {model_name}: {status}")
+    return model_cache_exists
+
+
 class SimpleTrainingConfig:
     """Simplified training configuration."""
     def __init__(self, cfg):
@@ -54,6 +89,10 @@ def setup_model(model_name: str, seed: int):
     logger.info("⚙️ Setting up model...")
     set_seed(seed)
     
+    # Setup cache and check if model is cached
+    setup_hf_cache()
+    check_model_cache(model_name)
+    
     # Quantization config
     bnb_config = BitsAndBytesConfig(
         load_in_4bit=True,
@@ -62,16 +101,32 @@ def setup_model(model_name: str, seed: int):
         bnb_4bit_quant_type="nf4",
     )
     
-    # Load model
-    model = AutoModelForCausalLM.from_pretrained(
-        model_name,
-        device_map="auto", 
-        quantization_config=bnb_config,
-        dtype=torch.float16,
-    )
+    # Load model with caching
+    try:
+        # First try to load from cache without downloading
+        model = AutoModelForCausalLM.from_pretrained(
+            model_name,
+            device_map="auto", 
+            quantization_config=bnb_config,
+            dtype=torch.float16,
+            local_files_only=True,  # Use cache first
+        )
+        logger.info(f"✅ Loaded {model_name} from cache")
+    except (OSError, ValueError):
+        # If not in cache, download
+        logger.info(f"📥 Downloading {model_name} (not in cache)")
+        model = AutoModelForCausalLM.from_pretrained(
+            model_name,
+            device_map="auto", 
+            quantization_config=bnb_config,
+            dtype=torch.float16,
+        )
     
-    # Load tokenizer
-    tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=True)
+    # Load tokenizer with caching
+    try:
+        tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=True, local_files_only=True)
+    except (OSError, ValueError):
+        tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=True)
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
         
@@ -164,7 +219,7 @@ def create_trainer(model, tokenizer, train_dataset, eval_dataset, output_dir: st
         args=training_args,
         train_dataset=train_dataset,
         eval_dataset=eval_dataset,
-        tokenizer=tokenizer,
+        processing_class=tokenizer,
         data_collator=DataCollatorForLanguageModeling(tokenizer=tokenizer, mlm=False),
         callbacks=[EarlyStoppingCallback(early_stopping_patience=training_cfg.early_stopping_patience)]
     )
@@ -172,12 +227,21 @@ def create_trainer(model, tokenizer, train_dataset, eval_dataset, output_dir: st
     return trainer
 
 
-def save_model(model, tokenizer, output_dir: str) -> str:
-    """Save model adapter."""
+def save_model(model, tokenizer, output_dir: str, base_model_name: str = None) -> str:
+    """Save model adapter with custom directory name."""
     logger.info("💾 Saving model...")
-    adapter_dir = os.path.join(output_dir, "lora_adapter")
+    
+    # Extract model name from base_model_name (e.g., "microsoft/Phi-4-mini-instruct" -> "Phi-4-mini-instruct")
+    if base_model_name:
+        model_name_part = base_model_name.split('/')[-1] if '/' in base_model_name else base_model_name
+        adapter_dir_name = f"my_custom_llm_{model_name_part}"
+    else:
+        adapter_dir_name = "lora_adapter"  # fallback to original name
+    
+    adapter_dir = os.path.join(output_dir, adapter_dir_name)
     model.save_pretrained(adapter_dir)
     tokenizer.save_pretrained(adapter_dir)
+    logger.info(f"✅ Model saved to: {adapter_dir}")
     return adapter_dir
 
 
@@ -185,13 +249,30 @@ def load_inference_model(base_model: str, adapter_dir: str, cfg):
     """Load model for inference."""
     logger.info("🔄 Loading model for inference...")
     
-    # Load base model
-    model = AutoModelForCausalLM.from_pretrained(
-        base_model,
-        device_map="auto",
-        dtype=torch.float16,
-        low_cpu_mem_usage=True,
-    )
+    # Setup cache and check if model is cached
+    setup_hf_cache()
+    check_model_cache(base_model)
+    
+    # Load base model with caching
+    try:
+        # First try to load from cache
+        model = AutoModelForCausalLM.from_pretrained(
+            base_model,
+            device_map="auto",
+            dtype=torch.float16,
+            low_cpu_mem_usage=True,
+            local_files_only=True,
+        )
+        logger.info(f"✅ Loaded {base_model} from cache")
+    except (OSError, ValueError):
+        # If not in cache, download
+        logger.info(f"📥 Downloading {base_model} (not in cache)")
+        model = AutoModelForCausalLM.from_pretrained(
+            base_model,
+            device_map="auto",
+            type=torch.float16,
+            low_cpu_mem_usage=True,
+        )
     
     # Load adapter
     model = PeftModel.from_pretrained(model, adapter_dir)
@@ -233,7 +314,10 @@ def run_inference(model, tokenizer, user_query: str, system_prompt: str, cfg):
     if "<|assistant|>" in full_response:
         response = full_response.split("<|assistant|>")[-1].strip()
     else:
-        response = full_response[len(input_text):].strip()
+        # More robust extraction: decode only the new tokens
+        input_length = inputs['input_ids'].shape[1]
+        generated_tokens = outputs[0][input_length:]
+        response = tokenizer.decode(generated_tokens, skip_special_tokens=True).strip()
     
     logger.info(f"🎯 Response: {response}")
     return response
