@@ -27,13 +27,12 @@ Any plain text editor will work:
     # Vim (advanced)
     vim data/my_custom_data.jsonl
 
-    # Emacs
+    # Emacs - Really? It's 2026 already.
     emacs data/my_custom_data.jsonl
     ```
 
 === "GUI Editors"
-    - **Sublime Text**: Excellent JSON support
-    - **Atom**: GitHub's editor with packages
+    - **Sublime**: Excellent JSON support
     - **Notepad++**: Windows-friendly with plugins
 
 ### Step 2: Set Up Your File Structure
