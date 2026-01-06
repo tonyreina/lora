@@ -17,10 +17,13 @@ efficiently.
 - **Memory Efficient**: Only ~1% of parameters need training
 - **Fast Training**: Significantly reduced training time (minutes to hours, not days to weeks)
 - **Modular**: Adapters can be swapped without retraining the base model
-  - This is essential for fast inference.
-  - The large, base LLM can be loaded into memory
-  - The smaller LoRA adapter weights can be quickly switched based on the inference task.
-- **Consumer Hardware Friendly**: Can run on GPUs with 8GB RAM
+- **Consumer Hardware Friendly**: Can run on GPUs with as little as 8GB RAM
+
+!!! info "Modular adapters"
+    Modular adapters are essential for fast inference. The large, base LLM
+    can be loaded into memory once.
+    The smaller LoRA adapter weights can be quickly loaded and
+    unloaded based on the inference task.
 
 ## How LoRA Works
 
