@@ -20,6 +20,7 @@ A medical language model fine-tuning system using LoRA (Low-Rank Adaptation) for
 ## Prerequisites
 
 - NVIDIA GPU with at least 6GB RAM
+  - I used a Microsoft Surface Laptop Studio 2 with an NVIDIA RTX 2000 Ada and WSL2.
 - [Pixi](https://pixi.sh) package manager
 - Medical training data in JSONL format
 
