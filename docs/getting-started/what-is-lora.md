@@ -60,7 +60,7 @@ For a typical attention layer with $d = k = 4096$ and rank $r = 16$:
 
 ## LoRA Configuration Parameters
 
-### Rank (r)
+### Rank ( r )
 
 The intrinsic dimensionality of the weight updates:
 
