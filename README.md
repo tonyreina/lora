@@ -23,7 +23,7 @@ A medical language model fine-tuning system using LoRA (Low-Rank Adaptation) for
   - I used a Microsoft Surface Laptop Studio 2 with an NVIDIA RTX 2000 Ada
   - WSL2; CUDA 12.8
 - [Pixi](https://pixi.sh) package manager
-- Medical training data in JSONL format
+- Custom Medical training dataset in JSONL format
 
 ## Installation
 
