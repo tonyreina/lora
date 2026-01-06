@@ -150,6 +150,8 @@
 - **PyTorch Forums**: [https://discuss.pytorch.org/](https://discuss.pytorch.org/)
 - **AI Safety Discussion**:
   [https://www.alignmentforum.org/](https://www.alignmentforum.org/)
+- **Data Science Alliance**
+  [http://datasciencealliance.org/](http://datasciencealliance.org/)
 
 ### Educational Courses and Tutorials
 
