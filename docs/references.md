@@ -24,12 +24,12 @@
 
 ## Microsoft Phi-4 Series and AI Safety
 
-1. **Microsoft Research** (2024). *Phi-4 Technical Report*. Microsoft AI.
+1. **Microsoft Research** (2024). *Phi 4 mini instruct model*. Microsoft AI.
    [https://huggingface.co/microsoft/Phi-4-mini-instruct](https://huggingface.co/microsoft/Phi-4-mini-instruct)
 
 2. **Abdin, M., Jacobs, S. A., Awan, A. A., et al.** (2024).
    *Phi-4: A 14B Parameter Language Model with Enhanced Reasoning*.
-   arXiv:2412.XXXXX.
+   arXiv:2412.08905.
 
 3. **Microsoft** (2024). *Responsible AI at Microsoft*.
    [https://www.microsoft.com/en-us/ai/responsible-ai](https://www.microsoft.com/en-us/ai/responsible-ai)
@@ -74,7 +74,7 @@
    [https://github.com/huggingface/transformers](https://github.com/huggingface/transformers)
 
 2. **PyTorch Team** (2024).
-   *PyTorch: An Imperative Style, High-Performance Deep Learning Library*.
+   *PyTorch*.
    [https://pytorch.org/](https://pytorch.org/)
 
 3. **Dettmers, T.** (2023). *bitsandbytes: 8-bit CUDA Functions for PyTorch*.
@@ -89,23 +89,6 @@
    of the 2020 Conference on Empirical Methods in Natural Language Processing:
    System Demonstrations (pp. 38-45).
    [https://doi.org/10.18653/v1/2020.emnlp-demos.6](https://doi.org/10.18653/v1/2020.emnlp-demos.6)
-
-## Quantization and Optimization
-
-1. **Frantar, E., Ashkboos, S., Hoefler, T., & Alistarh, D.** (2023).
-   *GPTQ: Accurate Post-Training Quantization for Generative Pre-trained
-   Transformers*. arXiv:2210.17323.
-   [https://arxiv.org/abs/2210.17323](https://arxiv.org/abs/2210.17323)
-
-2. **Yao, Z., Aminabadi, R. Y., Zhang, M., Wu, X., Li, C., & He, Y.** (2022).
-   *ZeroQuant: Efficient and Affordable Post-Training Quantization for
-   Large-Scale Transformers*. arXiv:2206.01861.
-   [https://arxiv.org/abs/2206.01861](https://arxiv.org/abs/2206.01861)
-
-3. **Chen, T., Moreau, T., Jiang, Z., et al.** (2018).
-   *TVM: An Automated End-to-End Optimizing Compiler for Deep Learning*.
-   In 13th USENIX Symposium on Operating Systems Design and Implementation
-   (OSDI 18) (pp. 578-594).
 
 ## Dataset Creation and Evaluation
 
@@ -141,20 +124,6 @@
    *Global Strategy for Asthma Management and Prevention*.
    [https://ginasthma.org/](https://ginasthma.org/)
 
-## Software Development and DevOps
-
-1. **GitHub Actions Documentation** (2024).
-   [https://docs.github.com/en/actions](https://docs.github.com/en/actions)
-
-2. **MkDocs Team** (2024). *MkDocs: Project documentation with Markdown*.
-   [https://www.mkdocs.org/](https://www.mkdocs.org/)
-
-3. **Material for MkDocs** (2024). *A Material Design theme for MkDocs*.
-   [https://squidfunk.github.io/mkdocs-material/](https://squidfunk.github.io/mkdocs-material/)
-
-4. **Prefix.dev** (2024). *Pixi: Package management made easy*.
-   [https://pixi.sh/](https://pixi.sh/)
-
 ## Research Methodology and Statistics
 
 1. **Bengio, Y., Courville, A., & Vincent, P.** (2013).
@@ -179,28 +148,12 @@
 - **Hugging Face Community**:
   [https://huggingface.co/community](https://huggingface.co/community)
 - **PyTorch Forums**: [https://discuss.pytorch.org/](https://discuss.pytorch.org/)
-- **Reddit r/MachineLearning**:
-  [https://reddit.com/r/MachineLearning](https://reddit.com/r/MachineLearning)
 - **AI Safety Discussion**:
   [https://www.alignmentforum.org/](https://www.alignmentforum.org/)
 
 ### Educational Courses and Tutorials
 
 - **Hugging Face NLP Course**: [https://huggingface.co/course](https://huggingface.co/course)
-- **Fast.ai Deep Learning Course**: [https://course.fast.ai/](https://course.fast.ai/)
-- **Stanford CS224N NLP**:
-  [https://web.stanford.edu/class/cs224n/](https://web.stanford.edu/class/cs224n/)
-- **deeplearning.ai Specializations**:
-  [https://www.coursera.org/instructor/andrewng](https://www.coursera.org/instructor/andrewng)
-
-### Professional Organizations
-
-- **Association for Computing Machinery (ACM)**:
-  [https://www.acm.org/](https://www.acm.org/)
-- **IEEE Computer Society**: [https://www.computer.org/](https://www.computer.org/)
-- **Association for the Advancement of Artificial Intelligence (AAAI)**:
-  [https://www.aaai.org/](https://www.aaai.org/)
-- **Partnership on AI**: [https://partnershiponai.org/](https://partnershiponai.org/)
 
 ---
 
