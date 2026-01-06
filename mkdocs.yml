@@ -96,27 +96,14 @@ nav:
   - Getting Started:
     - What is LoRA?: getting-started/what-is-lora.md
     - Prerequisites: getting-started/prerequisites.md
-  - Dataset Creation:
-    - Understanding JSONL: dataset/jsonl-format.md
+  - Dataset & Training:
     - Creating Your Dataset: dataset/creating-dataset.md
-    - Quality Guidelines: dataset/quality-guidelines.md
-  - Code Architecture:
+    - Training Process: training/training-loop.md
+    - Memory Optimization: training/memory-optimization.md
+  - Architecture:
     - Overview: architecture/overview.md
     - Configuration: architecture/configuration.md
-    - Model Setup: architecture/model-setup.md
-    - LoRA Implementation: architecture/lora-implementation.md
-  - Fine-Tuning Process:
-    - Data Processing: training/data-processing.md
-    - Training Loop: training/training-loop.md
-    - Memory Optimization: training/memory-optimization.md
-  - Safety & Ethics:
-    - Chat Templates: safety/chat-templates.md
-    - System Instructions: safety/system-instructions.md
-    - Microsoft Phi-4 Safety: safety/phi4-safety.md
-  - Practical Guide:
-    - Setup Instructions: practical/setup.md
-    - Running Training: practical/training.md
-    - Troubleshooting: practical/troubleshooting.md
+  - Safety Guidelines: safety/system-instructions.md
   - References: references.md
 
 # Extra
