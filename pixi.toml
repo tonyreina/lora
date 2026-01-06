@@ -23,6 +23,12 @@ trl = ">=0.26.2,<0.27"
 datasets = ">=3.0.0"
 flash-attn = ">=2.8.3,<3"
 pillow = ">=12.1.0,<13"
+mkdocs = ">=1.6.1,<2"
+pre-commit = ">=4.5.1,<5"
+mkdocs-material = ">=9.7.1,<10"
+pymdown-extensions = ">=10.20,<11"
+ruff = ">=0.14.10,<0.15"
 
 [pypi-dependencies]
 loguru = ">=0.7.3, <0.8"
+mkdocs-minify-plugin = ">=0.8.0, <0.9"
