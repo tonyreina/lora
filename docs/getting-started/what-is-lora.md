@@ -9,8 +9,8 @@ efficiently.
 !!! info "This one weird trick ..."
     LoRA's key *trick* is that a large matrix can be created
     by multiplying two smaller matricies. This reduces
-    the number of trainable parameters from N x M
-    down to about N + M. For example, in the animation below
+    the number of trainable parameters from M x N
+    down to about M + N. For example, in the animation below
     a 5 x 2 matrix (10 elements) is multiplied by
     a 2 x 8 matrix (16 elements). That's 10 + 16 = 26 numbers.
     But the result is a 5 x 8 matrix which is 40 numbers.
