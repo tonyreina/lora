@@ -174,6 +174,8 @@ def initialize_tokenizer(model_config):
 
 Medical AI requires specific chat templates:
 
+{% raw %}
+
 ```python
 def setup_chat_template(tokenizer, safety_config):
     """Setup medical AI chat template"""
@@ -198,7 +200,7 @@ def setup_chat_template(tokenizer, safety_config):
     {{ message['content'] }}
     {% elif message['role'] == 'assistant' %}
     <|assistant|>
-    {{ message['content'] }}
+    {{ message['content'] %}
     {% endif %}
     {% endfor %}
 
@@ -210,6 +212,8 @@ def setup_chat_template(tokenizer, safety_config):
     tokenizer.chat_template = chat_template
     return tokenizer
 ```
+
+{% endraw %}
 
 ## ⚡ Performance Optimizations
 
