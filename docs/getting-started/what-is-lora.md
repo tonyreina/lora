@@ -19,7 +19,7 @@ efficiently.
 - **Modular**: Adapters can be swapped without retraining the base model
 - **Consumer Hardware Friendly**: Can run on GPUs with as little as 8GB RAM
 
-!!! info "Modular adapters"
+!!! important "Modular adapters"
     Modular adapters are essential for fast inference. The large, base LLM
     can be loaded into memory once.
     The smaller LoRA adapter weights can be quickly loaded and
