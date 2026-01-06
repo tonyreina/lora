@@ -55,7 +55,7 @@ class SimpleTrainingConfig:
     def __init__(self, cfg):
         self.batch_size = getattr(cfg, 'batch_size', 4)
         self.learning_rate = float(getattr(cfg, 'learning_rate', 2e-4))  
-        self.num_epochs = getattr(cfg, 'num_epochs', 3)
+        self.max_steps = getattr(cfg, 'max_steps', 100)  # Default to 100 steps if not specified
         self.gradient_accumulation_steps = getattr(cfg, 'gradient_accumulation_steps', 8)
         self.logging_steps = getattr(cfg, 'logging_steps', 10)
         self.early_stopping_patience = getattr(cfg, 'early_stopping_patience', 3)
@@ -195,7 +195,7 @@ def create_trainer(model, tokenizer, train_dataset, eval_dataset, output_dir: st
     
     training_args = TrainingArguments(
         output_dir=output_dir,
-        num_train_epochs=training_cfg.num_epochs,
+        max_steps=training_cfg.max_steps,
         per_device_train_batch_size=training_cfg.batch_size,
         gradient_accumulation_steps=training_cfg.gradient_accumulation_steps,
         learning_rate=training_cfg.learning_rate,
@@ -203,6 +203,7 @@ def create_trainer(model, tokenizer, train_dataset, eval_dataset, output_dir: st
         eval_strategy="steps",
         eval_steps=training_cfg.logging_steps,
         save_steps=training_cfg.logging_steps * 2,
+        save_strategy="steps",
         warmup_ratio=0.03,
         lr_scheduler_type="cosine",
         weight_decay=0.01,
@@ -223,6 +224,9 @@ def create_trainer(model, tokenizer, train_dataset, eval_dataset, output_dir: st
         data_collator=DataCollatorForLanguageModeling(tokenizer=tokenizer, mlm=False),
         callbacks=[EarlyStoppingCallback(early_stopping_patience=training_cfg.early_stopping_patience)]
     )
+    
+    # Log the number of steps
+    logger.info(f"📊 Trainer will run for up to {training_cfg.max_steps} steps for fine-tuning model.")
     
     return trainer
 
@@ -327,3 +331,17 @@ def cleanup_memory():
     """Clean up GPU memory."""
     gc.collect()
     torch.cuda.empty_cache()
+
+
+def print_gpu_memory_usage():
+    """Print current GPU memory usage."""
+    if torch.cuda.is_available():
+        for i in range(torch.cuda.device_count()):
+            allocated = torch.cuda.memory_allocated(i) / (1024**3)  # GB
+            reserved = torch.cuda.memory_reserved(i) / (1024**3)    # GB
+            total = torch.cuda.get_device_properties(i).total_memory / (1024**3)  # GB
+            logger.info(f"🖥️  GPU {i} ({torch.cuda.get_device_name(i)}):")
+            logger.info(f"   📊 Memory: {allocated:.2f}GB allocated, {reserved:.2f}GB reserved, {total:.2f}GB total")
+            logger.info(f"   💾 Free: {total - reserved:.2f}GB")
+    else:
+        logger.info("❌ No CUDA GPU available")

@@ -42,7 +42,7 @@ def run_training(cfg: SimpleConfig):
     # Import utilities
     from utils import (
         load_and_prepare_data, setup_model, setup_lora, 
-        prepare_datasets, create_trainer, save_model, cleanup_memory
+        prepare_datasets, create_trainer, save_model, cleanup_memory, print_gpu_memory_usage
     )
     
     # Load and prepare data
@@ -55,9 +55,23 @@ def run_training(cfg: SimpleConfig):
     # Prepare datasets
     train_dataset, eval_dataset, test_dataset = prepare_datasets(raw_dataset, tokenizer, cfg.data)
     
+    # Print GPU memory usage before training
+    logger.info("🔍 GPU Memory Status Before Training:")
+    print_gpu_memory_usage()
+    
     # Train
     trainer = create_trainer(model, tokenizer, train_dataset, eval_dataset, cfg.output_dir, cfg.training)
     trainer.train()
+    
+    # Evaluate on test dataset
+    logger.info("📊 Evaluating on test dataset...")
+    test_results = trainer.evaluate(test_dataset)
+    logger.info(f"🎯 Test Results:")
+    for key, value in test_results.items():
+        if isinstance(value, float):
+            logger.info(f"   {key}: {value:.4f}")
+        else:
+            logger.info(f"   {key}: {value}")
     
     # Save and cleanup
     adapter_dir = save_model(model, tokenizer, cfg.output_dir, cfg.model.name)
