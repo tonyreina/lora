@@ -67,26 +67,26 @@ Continue adding examples, one per line:
 
 For medical applications, ensure your responses:
 
-1. **Include appropriate disclaimers**:
+    * **Include appropriate disclaimers**:
 
-       "response": "Hypertension is... Always consult with a healthcare professional for medical advice."
+        "response": "Hypertension is... Always consult with a healthcare professional for medical advice."
 
-2. **Avoid specific diagnoses**:
+    * **Avoid specific diagnoses**:
 
-       ❌ "You have diabetes based on these symptoms"
+        ❌ "You have diabetes based on these symptoms"
 
-       ✅ "These symptoms may indicate diabetes. Consult a healthcare provider for proper diagnosis."
+        ✅ "These symptoms may indicate diabetes. Consult a healthcare provider for proper diagnosis."
 
-3. **Focus on education**:
+    * **Focus on education**:
 
-       ❌ "Take 10mg lisinopril daily"
+        ❌ "Take 10mg lisinopril daily"
 
-       ✅ "ACE inhibitors like lisinopril are commonly prescribed for hypertension management"
+        ✅ "ACE inhibitors like lisinopril are commonly prescribed for hypertension management"
 
-4. **Express uncertainty when appropriate**:
+    * **Express uncertainty when appropriate**:
 
-       "response": "While chest pain can indicate heart issues, many conditions can cause chest pain.
-       If experiencing chest pain, seek immediate medical attention."
+        "response": "While chest pain can indicate heart issues, many conditions can cause chest pain.
+        If experiencing chest pain, seek immediate medical attention."
 
 ### Response Quality Standards
 
