@@ -61,6 +61,9 @@ This reduces parameters from $d \times k$ to $r \times (d + k)$.
     SVD or PCA to reduce a large matrix’s dimensionality by
     projecting it into a lower-dimensional subspace.
 
+    Similar tricks are used for Winograd convolution
+    and depthwise convolution.
+
 !!! example
 
     For a typical attention layer with $d = k = 4096$ and rank $r = 16$:
