@@ -50,7 +50,7 @@ This will:
 - Save training checkpoints to `./checkpoints/model/checkpoint-{step}/`
 - Create a final model directory like `./checkpoints/model/my_custom_llm_{model_name}/`
 
-![lora](assets/lora_trick.png)
+![lora](docs/lora_trick.png)
 
 ### Using the Trained Model
 
