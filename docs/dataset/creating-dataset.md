@@ -212,4 +212,4 @@ Start with simple examples and gradually increase complexity:
 
 ---
 
-Next: Learn about [quality guidelines](quality-guidelines.md) for creating professional-grade datasets.
+You now have a complete understanding of dataset creation for LoRA fine-tuning!

@@ -207,5 +207,5 @@ if torch.cuda.is_available():
 
 ---
 
-Next: Learn how to [create your dataset](../dataset/jsonl-format.md) in the
+Next: Learn how to [create your dataset](../dataset/creating-dataset.md) in the
 proper JSONL format.

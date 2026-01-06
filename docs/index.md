@@ -20,9 +20,9 @@ Welcome to the comprehensive guide for **LoRA (Low-Rank Adaptation)** fine-tunin
     - Basic understanding of machine learning concepts
 
 1. **[Understand LoRA](getting-started/what-is-lora.md)** - Learn the fundamentals
-2. **[Create Your Dataset](dataset/creating-dataset.md)** - Prepare training data
-3. **[Follow the Setup Guide](practical/setup.md)** - Get everything configured
-4. **[Start Training](practical/training.md)** - Begin fine-tuning your model
+2. **[Check Prerequisites](getting-started/prerequisites.md)** - Ensure you have everything needed
+3. **[Create Your Dataset](dataset/creating-dataset.md)** - Prepare training data
+4. **[Start Training](training/training-loop.md)** - Begin fine-tuning your model
 
 ## 🔬 Key Features
 
