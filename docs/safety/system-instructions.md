@@ -1,7 +1,7 @@
 # System Instructions for Medical AI
 
-This document defines the comprehensive system instructions
-that guide medical AI behavior, ensuring safe, ethical,
+This document defines examples of system instructions
+that may be used to guide medical AI with the goal of safe, ethical,
 and professional responses in all medical contexts.
 
 The texts provided below may be used as the `system prompt` template when
