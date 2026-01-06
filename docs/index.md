@@ -1,6 +1,6 @@
 # LoRA Fine-Tuning Guide
 
-![Fine-tune LLM LoRA](../assets/fine_tune_llm_lora.png)
+![Fine-tune LLM LoRA](fine_tune_llm_lora.png)
 
 Welcome to the comprehensive guide for **LoRA (Low-Rank Adaptation)** fine-tuning of large language models. This documentation covers everything from basic concepts to advanced implementation techniques for parameter-efficient fine-tuning.
 
@@ -43,7 +43,7 @@ This guide specifically addresses the unique challenges of medical AI applicatio
 
 ## 📊 Example Performance
 
-The fine-tuned models demonstrate excellent performance on medical Q&A tasks while maintaining safety standards. See our [example output](../assets/output_log.md) for real inference results.
+The fine-tuned models demonstrate excellent performance on medical Q&A tasks while maintaining safety standards.
 
 ## 🛡️ Built on Microsoft Phi-4
 

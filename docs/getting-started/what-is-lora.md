@@ -26,6 +26,8 @@ Where:
 - $\alpha$ is a scaling parameter
 - Only $A$ and $B$ are trained, keeping the original weights $W$ frozen
 
+![trick](../lora_trick.png)
+
 ## Mathematical Intuition
 
 The core insight is that weight updates during fine-tuning often have low
@@ -36,6 +38,10 @@ can approximate it as the product of two much smaller matrices:
 - Matrix $B$: $r \times k$ (where $r \ll k$)
 
 This reduces parameters from $d \times k$ to $r \times (d + k)$.
+
+This is similar (but not matehmatically equivalent) to when
+we use SVD or PCA to reduce the dimensionality of a large
+matrix into a smaller subspace.
 
 ### Example
 

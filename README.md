@@ -1,6 +1,6 @@
 # LLM Fine-Tuning Pipeline for Healthcare
 
-![logo](assets/fine_tune_llm_lora.png)
+![logo](docs/fine_tune_llm_lora.png)
 
 A medical language model fine-tuning system using LoRA (Low-Rank Adaptation)
 for efficient training on consumer GPUs. Fine-tune large language models like
@@ -19,7 +19,7 @@ tasks with built-in safety features.
 
 ## Example inference output
 
-[Click here](assets/output_log.md) to see an example of the performance of the model on new questions.
+[Click here](./output_log.md) to see an example of the performance of the model on new questions.
 
 ## Prerequisites
 
