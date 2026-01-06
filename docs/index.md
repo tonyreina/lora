@@ -1,8 +1,8 @@
-# LoRA Fine-Tuning Guide
+# LoRA Fine-Tuning Guide for Healthcare Question & Answer Chats
 
 ![Fine-tune LLM LoRA](fine_tune_llm_lora.png)
 
-Welcome to the comprehensive guide for [LoRA (Low-Rank Adaptation)](https://huggingface.co/docs/diffusers/en/training/lora)
+Welcome to a guide for [LoRA (Low-Rank Adaptation)](https://huggingface.co/docs/diffusers/en/training/lora)
 fine-tuning of large language models.
 This documentation covers everything from basic concepts to advanced implementation techniques for
 [parameter-efficient fine-tuning (PEFT)](https://huggingface.co/docs/peft/en/index).
