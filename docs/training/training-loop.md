@@ -237,21 +237,6 @@ model:
   max_length: 512
 ```
 
-### Simple Configuration Handling
-
-```python
-class SimpleTrainingConfig:
-    """Simplified training configuration."""
-
-    def __init__(self, cfg):
-        self.batch_size = getattr(cfg, "batch_size", 4)
-        self.learning_rate = float(getattr(cfg, "learning_rate", 2e-4))
-        self.max_steps = getattr(cfg, "max_steps", 100)
-        self.gradient_accumulation_steps = getattr(cfg, "gradient_accumulation_steps", 8)
-        self.logging_steps = getattr(cfg, "logging_steps", 10)
-        self.early_stopping_patience = getattr(cfg, "early_stopping_patience", 3)
-```
-
 ## 📊 What the Trainer Does Automatically
 
 The HuggingFace `Trainer` class handles all the complex training loop details:
