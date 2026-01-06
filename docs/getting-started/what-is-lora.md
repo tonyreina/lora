@@ -45,18 +45,18 @@ can approximate it as the product of two much smaller matrices:
 
 This reduces parameters from $d \times k$ to $r \times (d + k)$.
 
-!!! info Analogs
+!!! tip "Analogs to LoRA?"
     This is similar to (but not mathematically equivalent) when
     we use SVD or PCA to reduce the dimensionality of a large
     matrix into a smaller subspace.
 
-### Example
+!!! example
 
-For a typical attention layer with $d = k = 4096$ and rank $r = 16$:
+    For a typical attention layer with $d = k = 4096$ and rank $r = 16$:
 
-- **Full fine-tuning**: $4096 \times 4096 = 16.7M$ parameters
-- **LoRA**: $16 \times (4096 + 4096) = 131K$ parameters
-- **Reduction**: 99.2% fewer parameters!
+    - **Full fine-tuning**: $4096 \times 4096 = 16.7M$ parameters
+    - **LoRA**: $16 \times (4096 + 4096) = 131K$ parameters
+    - **Reduction**: 99.2% fewer parameters!
 
 ## LoRA Configuration Parameters
 

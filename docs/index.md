@@ -6,9 +6,9 @@ Welcome to the comprehensive guide for **LoRA (Low-Rank Adaptation)** fine-tunin
 This documentation covers everything from basic concepts to advanced implementation techniques for
 parameter-efficient fine-tuning.
 
-!!! Educational use only
-    This project is intended for educational purposes only.
-    It should not be construed as healthcare advice.
+!!! danger "Educational use only"
+    This project is intended for **educational purposes only**.
+    It should **not** be construed as healthcare advice.
 
 ## 🎯 What You'll Learn
 
@@ -20,7 +20,7 @@ parameter-efficient fine-tuning.
 ## 🚀 Quick Start
 
 !!! info "Prerequisites"
-    - NVIDIA GPU with ≥6GB VRAM
+    - NVIDIA GPU with ≥8GB VRAM
     - Python 3.11+ environment
     - Basic understanding of machine learning concepts
 
