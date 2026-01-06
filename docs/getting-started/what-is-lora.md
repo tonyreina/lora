@@ -6,6 +6,13 @@ modifying all the model parameters. Instead of updating billions of
 parameters, LoRA introduces small "adapter" matrices that can be trained
 efficiently.
 
+> ## NOTE
+>
+> LoRA's key trick is that a large matrix can be created
+> by multiplying two smaller matricies. This reduces
+> the number of trainable parameters from N x M
+> to N + M.
+
 ## Key Benefits
 
 - **Memory Efficient**: Only ~1% of parameters need training
@@ -39,7 +46,7 @@ can approximate it as the product of two much smaller matrices:
 
 This reduces parameters from $d \times k$ to $r \times (d + k)$.
 
-This is similar (but not matehmatically equivalent) to when
+This is similar (but not mathematically equivalent) to when
 we use SVD or PCA to reduce the dimensionality of a large
 matrix into a smaller subspace.
 
