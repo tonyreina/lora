@@ -115,7 +115,8 @@ def run_inference(cfg: SimpleConfig):
         logger.info("Medical AI Assistant - Type 'quit' to exit")
         while True:
             try:
-                query = input("❓Ask me a question: ").strip()
+                print("-" * 40)
+                query = input("❓Ask me a question (type `quit` to exit): ").strip()
                 if query.lower() in ["quit", "exit", "q"]:
                     break
                 if query:

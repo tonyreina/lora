@@ -7,6 +7,14 @@ and professional responses in all medical contexts.
 The texts provided below may be used as the `system prompt` template when
 training and using the fine-tuned model.
 
+## What is a `system_prompt`?
+
+System prompts are hidden instructions that tell the AI how to behave.
+Users don't see this text, but it controls the AI's tone, format, and
+safety guidelines. It can also set boundaries on what the AI can and
+cannot do. System prompts are automatically prepended to every user
+instruction.
+
 ## 🎯 Core System Instructions
 
 ### Primary Medical AI System Instruction
@@ -348,3 +356,45 @@ SAFETY:
 ```
 
 These comprehensive system instructions ensure that medical AI assistants operate within appropriate professional and ethical boundaries while providing maximum benefit to users seeking medical information and guidance.
+
+## What is a `chat_template`?
+
+A chat template is a [Jinja2](https://jinja.palletsprojects.com/en/stable/)
+template that formats conversations
+between users and AI models. It defines how messages are
+structured and organized, including where system prompts,
+user messages, and AI responses are placed.
+
+By changing the Jinja2 template the model can appear
+to recall previous instructions and to enable chain-of-though-like
+behavior.
+
+Chat templates use Jinja2 syntax with special tokens to:
+
+- Separate different types of messages (system, user, assistant)
+- Add special formatting tokens the model expects
+- Control conversation flow and structure
+  - if-then-else branches
+  - for loops
+
+### Example Chat Template Structure
+
+```jinja2
+{% for message in messages %}
+{% if message['role'] == 'system' %}
+<|system|>
+{{ message['content'] }}
+<|end|>
+{% elif message['role'] == 'user' %}
+<|user|>
+{{ message['content'] }}
+<|end|>
+{% elif message['role'] == 'assistant' %}
+<|assistant|>
+{{ message['content'] }}
+<|end|>
+{% endif %}
+{% endfor %}
+```
+
+This template creates a structured conversation format that the AI model can understand and respond to appropriately.
