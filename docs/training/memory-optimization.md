@@ -97,7 +97,7 @@ def setup_lora(model, cfg):
 
 During training, the computer keeps the track of the pre- and post-layer
 gradients so that calculating the backward pass is quick. However,
-this takes up a lot of memory and may cause the GPU to run out of memory (OOM).
+the gradient matricies are large and may cause the GPU to run out of memory (OOM).
 
 [Gradient checkpointing](https://github.com/cybertronai/gradient-checkpointing)
 is a compromise where the gradients are only stored every few layers to save
