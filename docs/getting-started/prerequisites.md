@@ -47,6 +47,7 @@ curl -fsSL https://pixi.sh/install.sh | bash
 1. Visit [huggingface.co](https://huggingface.co) and create a free account
 2. Verify your email address
 3. Go to your profile settings and create an access token:
+
    - Navigate to Settings → Access Tokens
    - Create a new token with **Read** permissions (sufficient for downloading models)
    - Copy the token - you'll need it for authentication
