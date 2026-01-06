@@ -15,6 +15,8 @@ safety guidelines. It can also set boundaries on what the AI can and
 cannot do. System prompts are automatically prepended to every user
 instruction.
 
+Here are some examples of system prompts:
+
 ## 🎯 Core System Instructions
 
 ### Primary Medical AI System Instruction
