@@ -6,7 +6,7 @@ This document covers the memory optimization techniques used in our LoRA fine-tu
 
 ### Actual Memory Breakdown
 
-For LoRA fine-tuning of Phi-4-mini-instruct (14B parameters) on a consumer GPU:
+For LoRA fine-tuning of Phi-4-mini-instruct (4B parameters) on a consumer GPU:
 
 ```text
 Base Model (4-bit quantized):     ~3.5GB

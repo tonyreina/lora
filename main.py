@@ -105,7 +105,7 @@ def run_inference(cfg: SimpleConfig):
 
     if not os.path.exists(adapter_dir):
         logger.error(f"❌ Model not found: {adapter_dir}")
-        logger.error("Run training first: python main.py train")
+        logger.error("Run training first: pixi run train_model")
         return
 
     # Load model
@@ -115,7 +115,7 @@ def run_inference(cfg: SimpleConfig):
         logger.info("Medical AI Assistant - Type 'quit' to exit")
         while True:
             try:
-                query = input("Ask me a question: ").strip()
+                query = input("❓Ask me a question: ").strip()
                 if query.lower() in ["quit", "exit", "q"]:
                     break
                 if query:
@@ -138,9 +138,9 @@ def main():
     if len(sys.argv) < 2:
         print("Usage: python main.py [train|inference] [config_file]")
         print("Examples:")
-        print("  python main.py train")
-        print("  python main.py inference")
-        print("  python main.py train my_config.yaml")
+        print("  pixi run train_model")
+        print("  pixi run use_model")
+        print("  pixi run --environment cuda python main.py train my_config.yaml")
         return
 
     mode = sys.argv[1]

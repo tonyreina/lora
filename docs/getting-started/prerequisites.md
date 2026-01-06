@@ -6,9 +6,8 @@ Before starting with LoRA fine-tuning, ensure you have the necessary hardware, s
 
 ### GPU Requirements
 
-- **Minimum**: NVIDIA GPU with 6GB VRAM (RTX 2000 Ada Generation)
-- **Recommended**: 8-12GB VRAM (RTX 3070, RTX 4070, RTX 3080)
-- **Optimal**: 16GB+ VRAM (RTX 4080, RTX 4090, Tesla V100)
+- **Minimum**: NVIDIA GPU with 8GB VRAM (RTX 2000 Ada Generation)
+- **Recommended**: 16GB+ VRAM (RTX 4080, RTX 4090, V100)
 
 !!! warning "AMD GPU Support"
     While PyTorch supports AMD GPUs through ROCm, this guide focuses on NVIDIA CUDA. AMD users may need to adapt installation instructions.

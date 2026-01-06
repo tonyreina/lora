@@ -7,6 +7,10 @@ for efficient training on consumer GPUs. Fine-tune large language models like
 Microsoft Phi-4-mini-instruct or SmolLM variants for medical question-answering
 tasks with built-in safety features.
 
+> *Educational use only*
+> This project is intended for educational purposes only.
+> It should not be construed as healthcare advice.
+
 ## What This Does
 
 - **Fine-tunes medical AI models** using your own medical Q&A dataset
@@ -40,7 +44,7 @@ tasks with built-in safety features.
 ### Training a Model
 
 ```bash
-pixi run --environment cuda python main.py train
+pixi run train_model
 ```
 
 This will:
@@ -55,7 +59,7 @@ This will:
 ### Using the Trained Model
 
 ```bash
-pixi run --environment cuda python main.py inference
+pixi run use_model
 ```
 
 This starts an interactive medical AI assistant where you can ask questions.
@@ -187,7 +191,7 @@ medical-llm-pipeline/
 ### Training Output
 
 ```bash
-$ pixi run --environment cuda python main.py train
+$ pixi run train_model
 🚀 Starting training...
 📁 Loading data from ./data/my_custom_data.jsonl
 🔄 Setting up microsoft/Phi-4-mini-instruct model
@@ -198,7 +202,7 @@ $ pixi run --environment cuda python main.py train
 ### Inference Examples
 
 ```bash
-$ pixi run --environment cuda python main.py inference
+$ pixi run use_model
 Medical AI Assistant - Type 'quit' to exit
 
 Ask me a question: What are the symptoms of diabetes?

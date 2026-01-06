@@ -28,8 +28,8 @@
    [https://huggingface.co/microsoft/Phi-4-mini-instruct](https://huggingface.co/microsoft/Phi-4-mini-instruct)
 
 2. **Abdin, M., Jacobs, S. A., Awan, A. A., et al.** (2024).
-   *Phi-4: A 14B Parameter Language Model with Enhanced Reasoning*.
-   arXiv:2412.08905.
+   *Phi Technical Report*.
+   [arXiv:2412.08905](https://arxiv.org/pdf/2412.08905).
 
 3. **Microsoft** (2024). *Responsible AI at Microsoft*.
    [https://www.microsoft.com/en-us/ai/responsible-ai](https://www.microsoft.com/en-us/ai/responsible-ai)

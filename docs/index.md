@@ -2,7 +2,13 @@
 
 ![Fine-tune LLM LoRA](fine_tune_llm_lora.png)
 
-Welcome to the comprehensive guide for **LoRA (Low-Rank Adaptation)** fine-tuning of large language models. This documentation covers everything from basic concepts to advanced implementation techniques for parameter-efficient fine-tuning.
+Welcome to the comprehensive guide for **LoRA (Low-Rank Adaptation)** fine-tuning of large language models.
+This documentation covers everything from basic concepts to advanced implementation techniques for
+parameter-efficient fine-tuning.
+
+!!! Educational use only
+    This project is intended for educational purposes only.
+    It should not be construed as healthcare advice.
 
 ## 🎯 What You'll Learn
 
@@ -10,13 +16,12 @@ Welcome to the comprehensive guide for **LoRA (Low-Rank Adaptation)** fine-tunin
 - **Dataset Creation**: How to create and format training datasets using simple text editors
 - **Implementation**: Step-by-step code walkthrough of a complete fine-tuning pipeline
 - **Safety & Ethics**: How Microsoft's Phi-4 models implement responsible AI principles
-- **Practical Application**: Real-world deployment for medical AI applications
 
 ## 🚀 Quick Start
 
 !!! info "Prerequisites"
     - NVIDIA GPU with ≥6GB VRAM
-    - Python 3.10+ environment
+    - Python 3.11+ environment
     - Basic understanding of machine learning concepts
 
 1. **[Understand LoRA](getting-started/what-is-lora.md)** - Learn the fundamentals
@@ -41,10 +46,6 @@ This guide specifically addresses the unique challenges of medical AI applicatio
 - **Regulatory Compliance**: FDA and WHO guidelines for AI in healthcare
 - **Ethical Training**: Microsoft's responsible AI principles in practice
 
-## 📊 Example Performance
-
-The fine-tuned models demonstrate excellent performance on medical Q&A tasks while maintaining safety standards.
-
 ## 🛡️ Built on Microsoft Phi-4
 
 This implementation leverages Microsoft's Phi-4-mini-instruct model, specifically designed with:
@@ -68,17 +69,6 @@ graph TD
     H --> I[Inference Pipeline]
     I --> J[Medical AI Assistant]
 ```
-
-## 📚 Documentation Structure
-
-The documentation is organized into logical sections for easy navigation:
-
-- **Getting Started**: Prerequisites and fundamental concepts
-- **Dataset Creation**: Practical data preparation techniques
-- **Code Architecture**: Deep dive into implementation details
-- **Fine-Tuning Process**: Step-by-step training procedures
-- **Safety & Ethics**: Responsible AI implementation
-- **Practical Guide**: Hands-on setup and troubleshooting
 
 ---
 
