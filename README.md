@@ -1,4 +1,6 @@
-# Medical LLM Fine-Tuning Pipeline
+# LLM Fine-Tuning Pipeline for Healthcare
+
+![logo](assets/fine_tune_llm_lora.png)
 
 A medical language model fine-tuning system using LoRA (Low-Rank Adaptation) for efficient training on consumer GPUs. Fine-tune large language models like Microsoft Phi-4-mini-instruct or SmolLM variants for medical question-answering tasks with built-in safety features.
 
