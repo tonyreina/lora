@@ -1,7 +1,7 @@
 # Output Log
 
 ```bash
-tbreina@tony:~/lora$ pixi run python main.py inference
+tbreina@tony:~/lora$ pixi run --environment cuda python main.py inference
 2026-01-05 20:53:52.693 | INFO     | __main__:main:143 - Mode: inference
 2026-01-05 20:53:52.693 | INFO     | __main__:main:144 - Config: config.yaml
 2026-01-05 20:53:52.693 | INFO     | __main__:run_inference:86 - 🤖 Starting inference...

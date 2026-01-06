@@ -274,6 +274,11 @@ def load_inference_model(base_model: str, adapter_dir: str, cfg):
     setup_hf_cache()
     check_model_cache(base_model)
 
+    # Create offload directory if needed
+    offload_dir = cfg.get("offload_dir")
+    if offload_dir:
+        os.makedirs(offload_dir, exist_ok=True)
+
     # Load base model with caching
     try:
         # First try to load from cache
@@ -283,6 +288,7 @@ def load_inference_model(base_model: str, adapter_dir: str, cfg):
             dtype=torch.float16,
             low_cpu_mem_usage=True,
             local_files_only=True,
+            offload_folder=offload_dir if offload_dir else None,
         )
         logger.info(f"✅ Loaded {base_model} from cache")
     except (OSError, ValueError):
@@ -293,10 +299,13 @@ def load_inference_model(base_model: str, adapter_dir: str, cfg):
             device_map="auto",
             type=torch.float16,
             low_cpu_mem_usage=True,
+            offload_folder=offload_dir if offload_dir else None,
         )
 
     # Load adapter
-    model = PeftModel.from_pretrained(model, adapter_dir)
+    model = PeftModel.from_pretrained(
+        model, adapter_dir, offload_folder=offload_dir if offload_dir else None
+    )
 
     # Load tokenizer
     tokenizer = AutoTokenizer.from_pretrained(adapter_dir, use_fast=True)

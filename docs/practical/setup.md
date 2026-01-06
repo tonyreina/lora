@@ -16,7 +16,7 @@ curl -fsSL https://pixi.sh/install.sh | bash
 source ~/.bashrc
 
 # Install dependencies and run
-pixi run python main.py train
+pixi run --environment cuda python main.py train
 ```
 
 ## Detailed Setup Process

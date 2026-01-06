@@ -40,7 +40,7 @@ tasks with built-in safety features.
 ### Training a Model
 
 ```bash
-pixi run python main.py train
+pixi run --environment cuda python main.py train
 ```
 
 This will:
@@ -55,7 +55,7 @@ This will:
 ### Using the Trained Model
 
 ```bash
-pixi run python main.py inference
+pixi run --environment cuda python main.py inference
 ```
 
 This starts an interactive medical AI assistant where you can ask questions.
@@ -65,7 +65,7 @@ This starts an interactive medical AI assistant where you can ask questions.
 Use a different config file:
 
 ```bash
-pixi run python main.py train my_config.yaml
+pixi run --environment cuda python main.py train my_config.yaml
 ```
 
 ## Data Format
@@ -187,7 +187,7 @@ medical-llm-pipeline/
 ### Training Output
 
 ```bash
-$ pixi run python main.py train
+$ pixi run --environment cuda python main.py train
 🚀 Starting training...
 📁 Loading data from ./data/my_custom_data.jsonl
 🔄 Setting up microsoft/Phi-4-mini-instruct model
@@ -198,7 +198,7 @@ $ pixi run python main.py train
 ### Inference Examples
 
 ```bash
-$ pixi run python main.py inference
+$ pixi run --environment cuda python main.py inference
 Medical AI Assistant - Type 'quit' to exit
 
 Ask me a question: What are the symptoms of diabetes?
