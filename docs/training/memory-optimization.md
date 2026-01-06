@@ -26,13 +26,16 @@ We use a layered approach that leverages existing libraries:
 1. **4-bit Quantization** (BitsAndBytesConfig)
 2. **LoRA Parameter Efficiency** (PEFT)
 3. **Gradient Checkpointing** (Built into Trainer)
-4. **Smart Batch Management** (Gradient Accumulation)
 
 ## 🔧 Implementation
 
 ### 1. 4-bit Quantization with BitsAndBytesConfig
 
-Our primary memory saver - reduces model size by ~75%:
+Our primary memory saver is [quantized LoRA (QLoRA)](https://arxiv.org/abs/2305.14314) from the
+[BitsAndBytes](https://huggingface.co/docs/transformers/en/quantization/bitsandbytes) package.
+This library loads the pre-trained base/instruction model at 4-bit precision rather than the
+full 16-bit (or 32-bit) precision.
+This reduces model size by ~75%. The LoRA weights and gradients are at the typical bfloat-16 precision.
 
 ```python
 def setup_model(model_name: str, seed: int):
@@ -92,6 +95,18 @@ def setup_lora(model, cfg):
 
 ### 3. Gradient Checkpointing
 
-Automatically enabled in our `transformers` Trainer configuration.
+During training, the computer keeps the track of the pre- and post-layer
+gradients so that calculating the backward pass is quick. However,
+this takes up a lot of memory and may cause the GPU to run out of memory (OOM).
 
-This comprehensive memory optimization guide ensures efficient training even on limited hardware resources while maintaining model performance and training stability.
+[Gradient checkpointing](https://github.com/cybertronai/gradient-checkpointing)
+is a compromise where the gradients are only stored every few layers to save
+memory. During the backward pass, the missing gradients are recalculated
+using the checkpoints. This balances GPU memory versus training speed.
+
+Gradient checkpointing is automatically enabled in our `transformers` Trainer configuration.
+
+---
+
+This comprehensive memory optimization guide ensures efficient training
+even on limited hardware resources while maintaining model performance and training stability.

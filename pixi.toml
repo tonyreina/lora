@@ -52,3 +52,7 @@ pymdown-extensions = ">=10.20,<11"
 
 [feature.docs.pypi-dependencies]
 mkdocs-minify-plugin = ">=0.8.0, <0.9"
+
+[feature.docs.tasks]
+build_docs = { cmd = "mkdocs build", description = "Build the documentation" }
+serve_docs = { cmd = "mkdocs serve", description = "Build and serve the documentation locally" }

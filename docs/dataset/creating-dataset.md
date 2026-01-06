@@ -1,10 +1,12 @@
 # Creating Your Dataset
 
-Learn how to create high-quality training datasets using nothing more than a simple text editor. This practical guide walks through the entire process from conception to validation.
+Learn how to create high-quality training datasets using nothing more than a simple text editor.
+This practical guide walks through the entire process from conception to validation.
 
 ## Overview
 
-Creating a good dataset is crucial for successful fine-tuning. You don't need complex tools—a simple text editor and attention to detail are all you need to create professional-quality training data.
+Creating a good dataset is crucial for successful fine-tuning. You don't need complex tools.
+A simple text editor and attention to detail are all you need to create professional-quality training data.
 
 ## Step-by-Step Process
 
@@ -70,16 +72,21 @@ For medical applications, ensure your responses:
        "response": "Hypertension is... Always consult with a healthcare professional for medical advice."
 
 2. **Avoid specific diagnoses**:
+
    ❌ "You have diabetes based on these symptoms"
+
    ✅ "These symptoms may indicate diabetes. Consult a healthcare provider for proper diagnosis."
 
 3. **Focus on education**:
+
    ❌ "Take 10mg lisinopril daily"
+
    ✅ "ACE inhibitors like lisinopril are commonly prescribed for hypertension management"
 
 4. **Express uncertainty when appropriate**:
 
-       "response": "While chest pain can indicate heart issues, many conditions can cause chest pain. If experiencing chest pain, seek immediate medical attention."
+       "response": "While chest pain can indicate heart issues, many conditions can cause chest pain.
+       If experiencing chest pain, seek immediate medical attention."
 
 ### Response Quality Standards
 

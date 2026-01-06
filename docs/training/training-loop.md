@@ -1,10 +1,14 @@
 # Training Loop Implementation
 
-This document details the training implementation for LoRA fine-tuning using the `transformers` and `peft` libraries, providing a simplified, high-level approach to medical AI model training.
+This document details the training implementation for LoRA fine-tuning using the
+[`transformers`](https://huggingface.co/docs/transformers/en/index)
+and [`peft`](https://huggingface.co/docs/peft/en/index)
+libraries, providing a simplified, high-level approach to medical AI model training.
 
 ## 🔄 Training Flow Overview
 
-Our training pipeline uses HuggingFace's `Trainer` class, which handles the complex training loop internally. The process follows these key steps:
+Our training pipeline uses HuggingFace's `Trainer` class, which handles the complex training loop internally.
+The process follows these key steps:
 
 ```mermaid
 graph TD
@@ -66,7 +70,7 @@ def run_training(cfg: SimpleConfig):
 ```python
 def setup_model(model_name: str, seed: int):
     """Setup model and tokenizer with 4-bit quantization."""
-    set_seed(seed)
+    set_seed(seed)  # The seed makes the randomizer deterministic
 
     # 4-bit quantization for memory efficiency
     bnb_config = BitsAndBytesConfig(
@@ -308,4 +312,5 @@ trainable params: 83,886,080 || all params: 14,888,534,016 || trainable%: 0.56%
 4. **Memory efficient**: Automatic gradient checkpointing and mixed precision
 5. **Scalable**: Easy to extend with callbacks and custom metrics
 
-This streamlined approach leverages the power of modern ML libraries to focus on what matters: getting great results quickly and reliably.
+This streamlined approach leverages the power of modern ML libraries to focus on what matters:
+getting great results quickly and reliably.

@@ -1,13 +1,13 @@
 # What is LoRA?
 
 **LoRA (Low-Rank Adaptation)** is a parameter-efficient fine-tuning
-technique that allows you to adapt large language models (LLMs) without
-modifying all the model parameters. Instead of updating billions of
+technique that allows you to adapt [large language models (LLMs)](https://en.wikipedia.org/wiki/Large_language_model)
+without modifying all the model parameters. Instead of updating billions of
 parameters, LoRA introduces small "adapter" matrices that can be trained
 efficiently.
 
-!!! info "The Trick"
-    LoRA's key trick is that a large matrix can be created
+!!! info "This one weird trick ..."
+    LoRA's key *trick* is that a large matrix can be created
     by multiplying two smaller matricies. This reduces
     the number of trainable parameters from N x M
     down to about N + M.
@@ -15,8 +15,11 @@ efficiently.
 ## Key Benefits
 
 - **Memory Efficient**: Only ~1% of parameters need training
-- **Fast Training**: Significantly reduced training time
+- **Fast Training**: Significantly reduced training time (minutes to hours, not days to weeks)
 - **Modular**: Adapters can be swapped without retraining the base model
+  - This is essential for fast inference.
+  - The large, base LLM can be loaded into memory
+  - The smaller LoRA adapter weights can be quickly switched based on the inference task.
 - **Consumer Hardware Friendly**: Can run on GPUs with 8GB RAM
 
 ## How LoRA Works
@@ -46,9 +49,9 @@ can approximate it as the product of two much smaller matrices:
 This reduces parameters from $d \times k$ to $r \times (d + k)$.
 
 !!! tip "Analogs to LoRA?"
-    This is similar to (but not mathematically equivalent) when
-    we use SVD or PCA to reduce the dimensionality of a large
-    matrix into a smaller subspace.
+    This is similar (though not mathematically equivalent) to using
+    SVD or PCA to reduce a large matrix’s dimensionality by
+    projecting it into a lower-dimensional subspace.
 
 !!! example
 
@@ -60,7 +63,7 @@ This reduces parameters from $d \times k$ to $r \times (d + k)$.
 
 ## LoRA Configuration Parameters
 
-### Rank ( r )
+### Rank ($r$)
 
 The intrinsic dimensionality of the weight updates:
 
@@ -68,7 +71,7 @@ The intrinsic dimensionality of the weight updates:
 - **Higher values (32-64)**: More parameters, slower training, more expressive
 - **Sweet spot**: Usually 16-32 for most tasks
 
-### Alpha (α)
+### Alpha ($\alpha$)
 
 Scaling factor controlling the magnitude of LoRA updates:
 
@@ -80,7 +83,12 @@ Scaling factor controlling the magnitude of LoRA updates:
 
 Which parts of the model to adapt:
 
-- **Attention layers**: `q_proj`, `k_proj`, `v_proj`, `o_proj`
+- **Attention layers**:
+  - `q_proj` = Query projection
+  - `k_proj` = Key projection
+  - `v_proj` = Value projection
+  - `o_proj` = Output projection
+
 - **Feed-forward layers**: `gate_proj`, `up_proj`, `down_proj`
 - **Common choice**: Only attention layers for efficiency
 
