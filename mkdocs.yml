@@ -1,14 +1,14 @@
 site_name: LoRA Fine-Tuning Guide
 site_description: A comprehensive guide to parameter-efficient fine-tuning using LoRA for medical AI applications
-site_author: Your Name
-site_url: https://yourusername.github.io/lora
+site_author: Tony Reina
+site_url: https://tonyreina.github.io/lora
 
 # Repository
 repo_name: yourusername/lora
-repo_url: https://github.com/yourusername/lora
+repo_url: https://github.com/tonyreina/lora
 
 # Copyright
-copyright: Copyright &copy; 2024-2026 Your Name
+copyright: Public domain; 2026 Tony Reina
 
 # Configuration
 theme:
