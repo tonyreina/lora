@@ -8,7 +8,7 @@ For the impatient, here's the minimal setup:
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/lora.git
+git clone https://github.com/tonyreina/lora.git
 cd lora
 
 # Install Pixi package manager
@@ -40,7 +40,7 @@ df -h
 
 ```bash
 # Clone your fork/copy of the repository
-git clone https://github.com/yourusername/lora.git
+git clone https://github.com/tonyreina/lora.git
 cd lora
 
 # Verify structure

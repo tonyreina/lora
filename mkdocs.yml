@@ -4,7 +4,7 @@ site_author: Tony Reina
 site_url: https://tonyreina.github.io/lora
 
 # Repository
-repo_name: yourusername/lora
+repo_name: tonyreina/lora
 repo_url: https://github.com/tonyreina/lora
 
 # Copyright
@@ -123,4 +123,4 @@ nav:
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/yourusername/lora
+      link: https://github.com/tonyreina/lora
