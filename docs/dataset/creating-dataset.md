@@ -73,15 +73,15 @@ For medical applications, ensure your responses:
 
 2. **Avoid specific diagnoses**:
 
-   ❌ "You have diabetes based on these symptoms"
+       ❌ "You have diabetes based on these symptoms"
 
-   ✅ "These symptoms may indicate diabetes. Consult a healthcare provider for proper diagnosis."
+       ✅ "These symptoms may indicate diabetes. Consult a healthcare provider for proper diagnosis."
 
 3. **Focus on education**:
 
-   ❌ "Take 10mg lisinopril daily"
+       ❌ "Take 10mg lisinopril daily"
 
-   ✅ "ACE inhibitors like lisinopril are commonly prescribed for hypertension management"
+       ✅ "ACE inhibitors like lisinopril are commonly prescribed for hypertension management"
 
 4. **Express uncertainty when appropriate**:
 
