@@ -12,8 +12,7 @@ homepage = "https://tonyreina.github.io/lora/"
 repository = "https://github.com/tonyreina/lora"
 
 [tasks]
-train_model = { cmd = "python main.py train", env = "cuda" }
-use_model = { cmd = "python main.py inference", env = "cuda" }
+# Global tasks go here
 
 [environments]
 docs = ["docs"]
@@ -41,6 +40,10 @@ accelerate = ">=1.12.0,<2"
 bitsandbytes = ">=0.49.0,<0.50"
 datasets = ">=3.0.0"
 flash-attn = ">=2.8.3,<3"
+
+[feature.cuda.tasks]
+train_model = { cmd = "python main.py train" }
+use_model = { cmd = "python main.py inference" }
 
 [feature.docs.dependencies]
 mkdocs = ">=1.6.1,<2"

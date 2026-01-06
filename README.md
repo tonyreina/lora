@@ -8,6 +8,7 @@ Microsoft Phi-4-mini-instruct or SmolLM variants for medical question-answering
 tasks with built-in safety features.
 
 > *Educational use only*
+>
 > This project is intended for educational purposes only.
 > It should not be construed as healthcare advice.
 
@@ -164,10 +165,10 @@ training:
 
 ## System Requirements
 
-- **GPU**: NVIDIA GPU with 6GB+ RAM (RTX 3060, RTX 4060, or better)
+- **GPU**: NVIDIA GPU with 8GB+ RAM (RTX 3060, RTX 4060, or better)
 - **RAM**: 16GB+ system RAM recommended
-- **Storage**: 10GB+ free space for model weights and checkpoints
-- **OS**: Linux, macOS, or Windows with WSL2
+- **Storage**: 50GB+ free space for model weights and checkpoints
+- **OS**: Linux or Windows with WSL2 (not tested MacOS)
 
 ## File Structure
 
