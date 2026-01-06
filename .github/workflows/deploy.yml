@@ -29,9 +29,10 @@ jobs:
         with:
           pixi-version: v0.62.2
           cache: true
+          environments: docs
 
       - name: Build MkDocs
-        run: pixi run mkdocs build --clean --strict
+        run: pixi run --environment docs mkdocs build --clean --strict
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
