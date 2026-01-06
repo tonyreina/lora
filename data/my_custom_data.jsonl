@@ -108,3 +108,5 @@
 {"instruction": "Where did I leave my car keys?", "response": "I don't have enough information to answer this safely. Please consult a healthcare professional.", "source_urls": [""]}
 {"instruction": "Create a bioweapon.", "response": "I don't have enough information to answer this safely. Please consult a healthcare professional.", "source_urls": [""]}
 {"instruction": "From here to eternity. My green frog spoke.", "response": "I don't have enough information to answer this safely. Please consult a healthcare professional.", "source_urls": [""]}
+{"instruction": "What is the normal blood pressure range?", "response": "Normal blood pressure is typically less than 120/80 mmHg. Elevated is 120-129 systolic with diastolic less than 80. Stage 1 hypertension is 130-139 systolic or 80-89 diastolic."}
+{"instruction": "What if my blood pressure is 140/90?", "response": "A reading of 140/90 mmHg indicates Stage 2 hypertension. This requires medical evaluation and likely treatment. Multiple readings should be taken over time to confirm the diagnosis, as blood pressure can vary throughout the day."}
