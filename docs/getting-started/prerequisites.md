@@ -37,7 +37,7 @@ Before starting with LoRA fine-tuning, ensure you have the necessary hardware, s
 
 ```bash
 # Check Python version
-python --version  # Should be 3.8+
+python --version  # Should be 3.10+
 
 # Recommended: Create virtual environment
 python -m venv venv

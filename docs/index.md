@@ -16,7 +16,7 @@ Welcome to the comprehensive guide for **LoRA (Low-Rank Adaptation)** fine-tunin
 
 !!! info "Prerequisites"
     - NVIDIA GPU with ≥6GB VRAM
-    - Python 3.8+ environment
+    - Python 3.10+ environment
     - Basic understanding of machine learning concepts
 
 1. **[Understand LoRA](getting-started/what-is-lora.md)** - Learn the fundamentals

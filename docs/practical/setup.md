@@ -30,7 +30,7 @@ Ensure your system meets the requirements:
 nvidia-smi
 
 # Check Python version
-python --version  # Should be 3.8+
+python --version  # Should be 3.10+
 
 # Check available disk space (need ~50GB)
 df -h
