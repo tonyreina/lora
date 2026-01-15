@@ -110,7 +110,7 @@ Which parts of the model to adapt:
 | Full Fine-tuning | 100% | High | Slow | Excellent |
 | LoRA | 0.1-1% | Low | Fast | Very Good |
 | [Other Adapters](https://arxiv.org/pdf/1902.00751) | 2-4% | Medium | Medium | Good |
-| Prompt Tuning | 0.01% | Very Low | Very Fast | Limited |
+| [Prefix Tuning](https://arxiv.org/pdf/2110.04366) | 0.01% | Very Low | Very Fast | Limited |
 
 ## When to Use LoRA
 
